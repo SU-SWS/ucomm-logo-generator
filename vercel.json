@@ -1,0 +1,4 @@
+{
+  "buildCommand": "yarn build --no-lint",
+  "installCommand": "yarn workspaces focus --production"
+}

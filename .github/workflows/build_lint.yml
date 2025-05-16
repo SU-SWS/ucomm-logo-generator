@@ -1,0 +1,28 @@
+
+name: Build & Lint
+on: [push]
+jobs:
+  lint:
+    name: Lint & TS Check
+    runs-on: ubuntu-latest
+    container:
+      image: node:20
+      env:
+        NEXT_PUBLIC_DRUPAL_BASE_URL: http://localhost
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .next
+          key: lint-${{ hashFiles('package.json') }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            lint-${{ hashFiles('package.json') }}-${{ hashFiles('yarn.lock') }}
+            lint-${{ hashFiles('package.json') }}-
+      - name: Lint
+        run: |
+          yarn
+          yarn next telemetry disable
+          yarn lint
