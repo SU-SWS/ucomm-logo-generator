@@ -1,5 +1,3 @@
-"use cache"
-
 import "../src/styles/index.css"
 import {sourceSans3, stanford} from "../src/styles/typography/fonts"
 import {twJoin} from "tailwind-merge"
