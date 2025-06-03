@@ -18,6 +18,7 @@ import {toPng, toJpeg, toSvg} from "html-to-image"
 import {useId, useRef, useState} from "react"
 import downloadjs from "downloadjs"
 import {useDebounceCallback} from "usehooks-ts"
+import JSZip from "jszip"
 
 export type LockupProps = {
   line1?: string
@@ -28,7 +29,7 @@ export type LockupProps = {
   siteName?: string
   logoUrl?: string
 }
-type ImageFormats = "png" | "svg+xml" | "jpeg"
+type ImageFormats = "png" | "svg+xml" | "jpeg" | "zip"
 
 export const Lockup = ({lockupOption = "a"}) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -47,10 +48,25 @@ export const Lockup = ({lockupOption = "a"}) => {
 
   const downloadLogo = (format: ImageFormats) => {
     if (!ref.current) return
-
+    const element = ref.current
     let image: Promise<string> | undefined
     let filename = "logo.png"
     switch (format) {
+      case "zip": {
+        const zip = new JSZip()
+        toPng(element)
+          .then(dataUrl => zip.file("logo.png", dataUrl.replace("data:image/png;base64,", ""), {base64: true}))
+          .then(() =>
+            toJpeg(element, {backgroundColor: "white"})
+              .then(dataUrl => zip.file("logo.jpeg", dataUrl.replace("data:image/jpeg;base64,", ""), {base64: true}))
+              .then(() =>
+                zip.generateAsync({type: "blob"}).then(content => downloadjs(content, "logos.zip", "application/x-zip"))
+              )
+          )
+          .catch(_e => console.warn("An error happened creating images or zip file."))
+        return
+      }
+
       case "png":
         image = toPng(ref.current)
         break
@@ -110,6 +126,8 @@ export const Lockup = ({lockupOption = "a"}) => {
         <Button onClick={downloadLogo.bind(null, "svg+xml")}>Download SVG</Button>
 
         <Button onClick={downloadLogo.bind(null, "jpeg")}>Download JPG</Button>
+
+        <Button onClick={downloadLogo.bind(null, "zip")}>Download ZIP</Button>
       </div>
       <div ref={previewRef} />
     </div>
