@@ -10,7 +10,7 @@ const LockupA = ({line1, line5, siteName, logoUrl}: LockupProps) => {
           <div className="w-[1px] shrink-0 bg-black" />
         </div>
 
-        <div className="type-4 self-end font-normal text-black">{line1 || siteName}</div>
+        <div className="type-4 relative top-1 self-end font-normal text-black">{line1 || siteName}</div>
       </div>
 
       {line5 && <div className="border-t border-black font-semibold uppercase lg:border-t-0">{line5}</div>}
