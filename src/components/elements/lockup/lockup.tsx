@@ -13,6 +13,7 @@ import LockupS from "@components/elements/lockup/lockup-s"
 import LockupT from "@components/elements/lockup/lockup-t"
 import LockupLogo from "@components/elements/lockup/lockup-logo"
 import Link from "next/link"
+import Select from "react-select"
 import Button from "@components/elements/button"
 import {toPng, toJpeg, toSvg} from "html-to-image"
 import {useId, useRef, useState} from "react"
@@ -31,7 +32,7 @@ export type LockupProps = {
 }
 type ImageFormats = "png" | "svg+xml" | "jpeg" | "zip"
 
-export const Lockup = ({lockupOption = "a"}) => {
+export const Lockup = ({lockupOption = "h"}) => {
   const ref = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
   const id = useId()
@@ -99,6 +100,32 @@ export const Lockup = ({lockupOption = "a"}) => {
       </div>
 
       <form className="mb-10">
+        <div className="mb-5">
+          <label htmlFor={id + "-lockupOption"}>Lockup Option</label>
+          <Select
+            className="ml-5 inline-block w-60"
+            inputId={id + "-lockupOption"}
+            value={{value: lockupOption, label: lockupOption.toUpperCase()}}
+            onChange={option => {
+              if (option && option.value) window.location.search = `?lockupOption=${option.value}`
+            }}
+            options={[
+              {value: "a", label: "A"},
+              {value: "b", label: "B"},
+              {value: "d", label: "D"},
+              {value: "e", label: "E"},
+              {value: "h", label: "H"},
+              {value: "i", label: "I"},
+              {value: "m", label: "M"},
+              {value: "o", label: "O"},
+              {value: "p", label: "P"},
+              {value: "r", label: "R"},
+              {value: "s", label: "S"},
+              {value: "t", label: "T"},
+            ]}
+          />
+        </div>
+
         <div className="flex items-center gap-5">
           <label htmlFor={id + "-line1"}>Line 1</label>
           <input id={id + "-line1"} onChange={e => setLine1(e.target.value)} />
@@ -135,7 +162,7 @@ export const Lockup = ({lockupOption = "a"}) => {
 }
 
 export const LockupElement = ({
-  lockupOption = "a",
+  lockupOption = "b",
   line1,
   line2,
   line3,
