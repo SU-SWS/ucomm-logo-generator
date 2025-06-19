@@ -34,11 +34,17 @@ export type LockupOption =
   | "vertical_school_unit_level"
 type ImageFormats = "png" | "svg+xml" | "jpeg" | "zip" | "eps"
 
-export const Lockup = () => {
+export const Lockup = ({
+  allowChoice = false,
+  lockupChoice = "unit",
+}: {
+  allowChoice?: boolean
+  lockupChoice?: LockupOption
+}) => {
   const ref = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
   const id = useId()
-  const [lockupOption, setLockupOption] = useState<LockupOption>("unit")
+  const [lockupOption, setLockupOption] = useState<LockupOption>(lockupChoice)
   const [line1, setLine1State] = useState("")
   const setLine1 = useDebounceCallback(setLine1State, 500)
   const [line2, setLine2State] = useState("")
@@ -113,28 +119,30 @@ export const Lockup = () => {
 
   return (
     <div className="m-20">
-      <SelectList
-        label="Logo Style"
-        required
-        options={[
-          {value: "unit", label: "Unit (1 Line)"},
-          {value: "unit_2_line", label: "Unit (2 Lines)"},
-          {value: "unit_level", label: "Unit + Level (1 Line)"},
-          {value: "unit_2_lines", label: "Unit (2 Lines, Big/small"},
-          {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level)"},
-          {value: "school", label: "School Only"},
-          {value: "alt_school", label: "Alt School + Unit (1 Line)"},
-          {value: "multidisciplinary", label: "Multidisciplinary (or long school name)"},
-          {value: "vertical_unit", label: "Vertical - Unit"},
-          {value: "vertical_unit_2_lines", label: "Vertical - Unit (2 Lines)"},
-          {value: "vertical_2_lines_level", label: "Vertical - Unit (2 Lines) + Level"},
-          {value: "vertical_school", label: "Vertical - School"},
-          {value: "vertical_school_unit", label: "Vertical - School + Unit"},
-          {value: "vertical_school_unit_level", label: "Vertical - School + Unit + Level"},
-        ]}
-        defaultValue="unit"
-        onChange={(_e, value) => setLockupOption(value as LockupOption)}
-      />
+      {allowChoice && (
+        <SelectList
+          label="Logo Style"
+          required
+          options={[
+            {value: "unit", label: "Unit (1 Line)"},
+            {value: "unit_2_line", label: "Unit (2 Lines)"},
+            {value: "unit_level", label: "Unit + Level (1 Line)"},
+            {value: "unit_2_lines", label: "Unit (2 Lines, Big/small"},
+            {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level)"},
+            {value: "school", label: "School Only"},
+            {value: "alt_school", label: "Alt School + Unit (1 Line)"},
+            {value: "multidisciplinary", label: "Multidisciplinary (or long school name)"},
+            {value: "vertical_unit", label: "Vertical - Unit"},
+            {value: "vertical_unit_2_lines", label: "Vertical - Unit (2 Lines)"},
+            {value: "vertical_2_lines_level", label: "Vertical - Unit (2 Lines) + Level"},
+            {value: "vertical_school", label: "Vertical - School"},
+            {value: "vertical_school_unit", label: "Vertical - School + Unit"},
+            {value: "vertical_school_unit_level", label: "Vertical - School + Unit + Level"},
+          ]}
+          defaultValue="unit"
+          onChange={(_e, value) => setLockupOption(value as LockupOption)}
+        />
+      )}
       <div ref={ref} className="w-fit p-2">
         <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} />
       </div>
