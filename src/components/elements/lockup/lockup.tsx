@@ -21,7 +21,7 @@ export type LockupOption =
   | "unit"
   | "unit_2_line"
   | "unit_level"
-  | "unit_2_lines"
+  | "unit_2_lines_big_small"
   | "unit_2_lines_level"
   | "school"
   | "alt_school"
@@ -209,7 +209,7 @@ export const LockupElement = ({
     case "unit_level":
       return <LockupUnit {...lockupProps} />
 
-    case "unit_2_lines":
+    case "unit_2_lines_big_small":
       return <LockupUnit {...lockupProps} />
 
     case "unit_2_lines_level":
