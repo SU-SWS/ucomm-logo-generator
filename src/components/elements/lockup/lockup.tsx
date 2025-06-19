@@ -9,6 +9,17 @@ import JSZip from "jszip"
 import SelectList from "@components/elements/select-list"
 import {clsx} from "clsx"
 import LockupUnitTwoLines from "@components/elements/lockup/lockup-unit-two-lines"
+import LockupUnitLevel from "@components/elements/lockup/lockup-unit-level"
+import LockupUnitTwoLinesLevel from "@components/elements/lockup/lockup-unit-two-lines-level"
+import LockupSchool from "@components/elements/lockup/lockup-school"
+import LockupAltSchool from "@components/elements/lockup/lockup-alt-school"
+import LockupMultidisciplinary from "@components/elements/lockup/lockup-multidisciplinary"
+import LockupVerticalUnit from "@components/elements/lockup/lockup-vertical-unit"
+import LockupVerticalUnitTwoLines from "@components/elements/lockup/lockup-vertical-unit-two-lines"
+import LockupVerticalUnitTwoLinesLevel from "@components/elements/lockup/lockup-vertical-unit-two-lines-level"
+import LockupVerticalSchool from "@components/elements/lockup/lockup-vertical-school"
+import LockupVerticalSchoolUnit from "@components/elements/lockup/lockup-vertical-school-unit"
+import LockupVerticalSchoolUnitLevel from "@components/elements/lockup/lockup-vertical-school-unit-level"
 
 export type LockupProps = {
   line1?: string
@@ -119,6 +130,7 @@ export const Lockup = ({
 
   return (
     <div className="m-20">
+      <p>Please select a logo style:</p>
       {allowChoice && (
         <SelectList
           label="Logo Style"
@@ -146,7 +158,6 @@ export const Lockup = ({
       <div ref={ref} className="w-fit p-2">
         <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} />
       </div>
-
       <form className="mb-10">
         <div className="flex items-center gap-5">
           <label htmlFor={id + "-line1"}>Line 1</label>
@@ -207,40 +218,40 @@ export const LockupElement = ({
       return <LockupUnitTwoLines {...lockupProps} />
 
     case "unit_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupUnitLevel {...lockupProps} />
 
     case "unit_2_lines":
-      return <LockupUnit {...lockupProps} />
+      return <LockupUnitTwoLines {...lockupProps} />
 
     case "unit_2_lines_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupUnitTwoLinesLevel {...lockupProps} />
 
     case "school":
-      return <LockupUnit {...lockupProps} />
+      return <LockupSchool {...lockupProps} />
 
     case "alt_school":
-      return <LockupUnit {...lockupProps} />
+      return <LockupAltSchool {...lockupProps} />
 
     case "multidisciplinary":
-      return <LockupUnit {...lockupProps} />
+      return <LockupMultidisciplinary {...lockupProps} />
 
     case "vertical_unit":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalUnit {...lockupProps} />
 
     case "vertical_unit_2_lines":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalUnitTwoLines {...lockupProps} />
 
     case "vertical_2_lines_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalUnitTwoLinesLevel {...lockupProps} />
 
     case "vertical_school":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalSchool {...lockupProps} />
 
     case "vertical_school_unit":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalSchoolUnit {...lockupProps} />
 
     case "vertical_school_unit_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalSchoolUnitLevel {...lockupProps} />
   }
 }
 export default Lockup

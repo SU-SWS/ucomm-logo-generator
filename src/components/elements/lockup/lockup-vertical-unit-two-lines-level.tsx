@@ -2,7 +2,7 @@ import LockupLogo from "@components/elements/lockup/lockup-logo"
 import {LockupProps} from "@components/elements/lockup/lockup"
 
 // No equivalent in site's lockup
-const LockupUnit = ({line1, siteName, logoUrl}: LockupProps) => {
+const LockupVerticalUnitTwoLinesLevel = ({line1, line2, line3, siteName, logoUrl}: LockupProps) => {
   return (
     <div className="py-10">
       <div className="flex gap-4">
@@ -12,8 +12,10 @@ const LockupUnit = ({line1, siteName, logoUrl}: LockupProps) => {
         </div>
 
         <div className="type-4 self-end font-normal text-black">{line1 || siteName}</div>
+        <div className="type-4 self-end font-normal text-black">{line2 || line2}</div>
+        <div className="type-4 self-end font-normal text-black">{line3 || line3}</div>
       </div>
     </div>
   )
 }
-export default LockupUnit
+export default LockupVerticalUnitTwoLinesLevel
