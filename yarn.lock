@@ -3127,10 +3127,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-to-image@npm:1.11.13":
-  version: 1.11.13
-  resolution: "html-to-image@npm:1.11.13"
-  checksum: 10c0/03bd7192d87b99499e37ff12a8e2b41ddce4cf8e33a93dfadff18df0f213434c7f1ba8328db2158f4805da07b7aec3c90aec3152908281153217e86784218b10
+"html-to-image@npm:1.11.12":
+  version: 1.11.12
+  resolution: "html-to-image@npm:1.11.12"
+  checksum: 10c0/0022c30ef3f86982f62a60337f15ec1327cd236333779a42f00886e0b58c4b3746ad118932ed67aa242788fafb8825e537aa4af156385c0d3a4a67f98bb769f3
   languageName: node
   linkType: hard
 
@@ -3768,7 +3768,7 @@ __metadata:
     eslint-config-next: "npm:15.3.4"
     eslint-config-prettier: "npm:^10.1.5"
     eslint-plugin-prettier: "npm:^5.5.0"
-    html-to-image: "npm:1.11.13"
+    html-to-image: "npm:1.11.12"
     jszip: "npm:^3.10.1"
     next: "npm:15.3.4"
     postcss: "npm:^8.5.6"
