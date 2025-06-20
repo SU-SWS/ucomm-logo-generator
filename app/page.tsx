@@ -8,7 +8,7 @@ const Home = async () => {
       <h1 className="sr-only" id="page-title">
         Site name
       </h1>
-      <Lockup />
+      <Lockup allowChoice />
     </article>
   )
 }

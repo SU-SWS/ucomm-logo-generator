@@ -18,7 +18,7 @@ export const generateStaticParams = async (): Promise<Array<{logo: LockupOption}
     {logo: "unit"},
     {logo: "unit_2_line"},
     {logo: "unit_level"},
-    {logo: "unit_2_lines"},
+    {logo: "unit_2_lines_big_small"},
     {logo: "unit_2_lines_level"},
     {logo: "school"},
     {logo: "alt_school"},
