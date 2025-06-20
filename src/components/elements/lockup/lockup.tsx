@@ -159,17 +159,25 @@ export const Lockup = ({
         <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} />
       </div>
       <form className="mb-10">
-        <div className="flex items-center gap-5">
+        <div className="mb-10 flex items-center gap-5">
           <label htmlFor={id + "-line1"}>Line 1</label>
-          <input id={id + "-line1"} onChange={e => setLine1(e.target.value)} />
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line1"}
+            onChange={e => setLine1(e.target.value)}
+          />
         </div>
         <div
-          className={clsx("flex items-center gap-5", {
+          className={clsx("mb-10 flex items-center gap-5", {
             hidden: ["unit", "school", "vertical_unit", "vertical_school"].includes(lockupOption),
           })}
         >
           <label htmlFor={id + "-line2"}>Line 2</label>
-          <input id={id + "-line2"} onChange={e => setLine2(e.target.value)} />
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line2"}
+            onChange={e => setLine2(e.target.value)}
+          />
         </div>
         <div
           className={clsx("flex items-center gap-5", {
@@ -177,7 +185,11 @@ export const Lockup = ({
           })}
         >
           <label htmlFor={id + "-line3"}>Line 3</label>
-          <input id={id + "-line3"} onChange={e => setLine3(e.target.value)} />
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line3"}
+            onChange={e => setLine3(e.target.value)}
+          />
         </div>
       </form>
       <div className="flex gap-5">
