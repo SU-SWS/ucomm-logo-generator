@@ -8,7 +8,7 @@ const LockupLogo = ({logoUrl, siteName = ""}: {logoUrl?: string; siteName?: stri
           <img src={logoUrl} alt={`${siteName} Logo`} className="h-auto max-h-[35px] max-w-[400px] object-contain" />
         </picture>
       )}
-      {!logoUrl && <StanfordWordMark className="block h-[100px] w-auto text-cardinal-red no-underline" />}
+      {!logoUrl && <StanfordWordMark className="block h-[90px] w-auto text-cardinal-red no-underline" />}
     </>
   )
 }
