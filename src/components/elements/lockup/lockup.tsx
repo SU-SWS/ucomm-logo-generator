@@ -9,7 +9,7 @@ import JSZip from "jszip"
 import SelectList from "@components/elements/select-list"
 import {clsx} from "clsx"
 import LockupUnitTwoLines from "@components/elements/lockup/lockup-unit-two-lines"
-import LockupUnitTwoLinesBigSmall from "@components/elements/lockup/lockup-unit-two-lines-big-small"
+import LockupUnitTwoLinesBigSmall from "@components/elements/lockup/lockup-unit-two-lines-small-big"
 import LockupUnitLevel from "@components/elements/lockup/lockup-unit-level"
 import LockupUnitTwoLinesLevel from "@components/elements/lockup/lockup-unit-two-lines-level"
 import LockupSchool from "@components/elements/lockup/lockup-school"
@@ -140,8 +140,8 @@ export const Lockup = ({
             {value: "unit", label: "Unit (1 Line)"},
             {value: "unit_2_line", label: "Unit (2 Lines)"},
             {value: "unit_level", label: "Unit + Level (1 Line)"},
-            {value: "unit_2_lines_big_small", label: "Unit (2 Lines, Big/small"},
-            {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level)"},
+            {value: "unit_2_lines_big_small", label: "Unit (2 Lines, Small/Big)"},
+            {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level"},
             {value: "school", label: "School Only"},
             {value: "alt_school", label: "Alt School + Unit (1 Line)"},
             {value: "multidisciplinary", label: "Multidisciplinary (or long school name)"},
