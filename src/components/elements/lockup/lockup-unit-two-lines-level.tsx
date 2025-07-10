@@ -9,12 +9,12 @@ const LockupUnitTwoLinesLevel = ({line1, line2, line3, siteName, logoUrl}: Locku
         <div className="flex gap-[24px] self-end">
           <LockupLogo logoUrl={logoUrl} siteName={siteName} />
         </div>
-        <div className="w-[6px] shrink-0 bg-black" />
+        <div className="w-[1px] shrink-0 bg-black" />
 
         <div className="flex flex-col self-end">
-          <div className="text-[84px] font-normal leading-none text-black">{line1 || siteName}</div>
+          <div className="relative top-[-7px] text-[84px] font-normal leading-none text-black">{line1 || siteName}</div>
           <div className="text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
-          <div className="relative top-[10px] text-[66px] italic text-black">{line3 || line3}</div>
+          <div className="relative bottom-[-18px] text-[66px] italic text-black">{line3 || line3}</div>
         </div>
       </div>
     </div>
