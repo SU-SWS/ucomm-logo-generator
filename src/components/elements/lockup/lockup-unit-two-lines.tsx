@@ -10,9 +10,11 @@ const LockupUnitTwoLines = ({line1, line2, siteName, logoUrl}: LockupProps) => {
           <LockupLogo logoUrl={logoUrl} siteName={siteName} />
         </div>
         <div className="w-[1px] shrink-0 bg-black" />
-        <div className="relative flex flex-col self-end">
-          <div className="relative top-[-20px] self-start text-[84px] font-normal text-black">{line1 || siteName}</div>
-          <div className="relative bottom-[-21px] self-end text-[84px] font-normal text-black">{line2 || line2}</div>
+        <div className="relative bottom-[-20px] flex flex-col self-end">
+          <div className="relative top-[-25px] text-[84px] font-normal leading-none text-black">
+            {line1 || siteName}
+          </div>
+          <div className="relative text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
         </div>
       </div>
     </div>

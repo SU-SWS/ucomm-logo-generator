@@ -26,6 +26,7 @@ export type LockupProps = {
   line1?: string
   line2?: string
   line3?: string
+  line4?: string
   siteName?: string
   logoUrl?: string
 }
@@ -63,6 +64,8 @@ export const Lockup = ({
   const setLine2 = useDebounceCallback(setLine2State, 500)
   const [line3, setLine3State] = useState("")
   const setLine3 = useDebounceCallback(setLine3State, 500)
+  const [line4, setLine4State] = useState("")
+  const setLine4 = useDebounceCallback(setLine4State, 500)
 
   const downloadLogo = (format: ImageFormats) => {
     if (!ref.current) return
@@ -149,7 +152,7 @@ export const Lockup = ({
             {value: "vertical_unit_2_lines", label: "Vertical - Unit (2 Lines)"},
             {value: "vertical_2_lines_level", label: "Vertical - Unit (2 Lines) + Level"},
             {value: "vertical_school", label: "Vertical - School"},
-            {value: "vertical_school_unit", label: "Vertical - School + Unit"},
+            {value: "vertical_school_unit", label: "Vertical - School + Unit (2 Lines)"},
             {value: "vertical_school_unit_level", label: "Vertical - School + Unit + Level"},
           ]}
           defaultValue="unit"
@@ -157,7 +160,7 @@ export const Lockup = ({
         />
       )}
       <div ref={ref} className="w-fit p-2">
-        <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} />
+        <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} line4={line4} />
       </div>
       <form className="mb-10">
         <div className="mb-10 flex items-center gap-5">
@@ -181,8 +184,13 @@ export const Lockup = ({
           />
         </div>
         <div
-          className={clsx("flex items-center gap-5", {
-            hidden: !["unit_2_lines_level", "vertical_2_lines_level"].includes(lockupOption),
+          className={clsx("mb-10 flex items-center gap-5", {
+            hidden: ![
+              "unit_2_lines_level",
+              "vertical_2_lines_level",
+              "vertical_school_unit",
+              "vertical_school_unit_level",
+            ].includes(lockupOption),
           })}
         >
           <label htmlFor={id + "-line3"}>Line 3</label>
@@ -190,6 +198,18 @@ export const Lockup = ({
             className="p-25 h-[40px] w-[250px] text-3xl"
             id={id + "-line3"}
             onChange={e => setLine3(e.target.value)}
+          />
+        </div>
+        <div
+          className={clsx("mb-10 flex items-center gap-5", {
+            hidden: !["vertical_school_unit_level"].includes(lockupOption),
+          })}
+        >
+          <label htmlFor={id + "-line4"}>Line 4</label>
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line4"}
+            onChange={e => setLine4(e.target.value)}
           />
         </div>
       </form>
@@ -214,6 +234,7 @@ export const LockupElement = ({
   line1,
   line2,
   line3,
+  line4,
 }: LockupProps & {
   lockupOption: LockupOption
 }) => {
@@ -221,6 +242,7 @@ export const LockupElement = ({
     line1: line1,
     line2: line2,
     line3: line3,
+    line4: line4,
   }
 
   switch (lockupOption) {
