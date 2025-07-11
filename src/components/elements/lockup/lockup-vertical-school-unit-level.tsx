@@ -11,7 +11,7 @@ const LockupVerticalSchoolUnitLevel = ({line1, line2, line3, siteName, logoUrl}:
           <div className="w-[1px] shrink-0 bg-black" />
         </div>
 
-        <div className="type-4 self-end font-normal text-black">{line1 || siteName}</div>
+        <div className="type-4 self-end font-normal text-black">sdfsdf{line1 || siteName}</div>
         <div className="type-4 self-end font-normal text-black">{line2 || line2}</div>
         <div className="type-4 self-end font-normal text-black">{line3 || line3}</div>
       </div>
