@@ -13,7 +13,7 @@ const LockupUnitTwoLinesBigSmall = ({line1, line2, siteName, logoUrl}: LockupPro
 
         <div className="relative top-[-10px] flex flex-col self-end">
           <div className="text-[55px] font-normal leading-none text-black">{line1 || siteName}</div>
-          <div className="relative top-[24px] text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
+          <div className="relative top-[26px] text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
         </div>
       </div>
     </div>

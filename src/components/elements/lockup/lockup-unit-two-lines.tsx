@@ -14,7 +14,7 @@ const LockupUnitTwoLines = ({line1, line2, siteName, logoUrl}: LockupProps) => {
           <div className="relative top-[-25px] text-[84px] font-normal leading-none text-black">
             {line1 || siteName}
           </div>
-          <div className="relative text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
+          <div className="relative top-[-3px] text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
         </div>
       </div>
     </div>

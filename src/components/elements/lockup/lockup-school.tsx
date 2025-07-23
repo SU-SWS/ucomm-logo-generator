@@ -10,7 +10,7 @@ const LockupSchool = ({line1, siteName, logoUrl}: LockupProps) => {
           <LockupLogo logoUrl={logoUrl} siteName={siteName} />
           <div className="w-[1px] shrink-0 bg-black" />
         </div>
-        <div className="relative bottom-[-21px] self-end text-[120px] font-semibold uppercase leading-none text-black">
+        <div className="relative bottom-[-23px] self-end text-[120px] font-semibold uppercase leading-none text-black">
           {line1 || siteName}
         </div>
       </div>
