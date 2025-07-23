@@ -51,10 +51,10 @@ yarn start
 
 ## Usage
 
-2. **Choose Layout Style**: Select between options with a vertical (stacked) or horizontal logo orientation
-1. **Enter Department/Unit Name**: Add your Stanford department, school, or unit name
-1. **Preview**: See real-time changes with official Stanford styling
-1. **Export**: Download your logo in preferred format while maintaining brand compliance. The ZIP download includes all file types and black and white versions.
+1. **Choose Layout Style**: Select between multiple display options in either a vertical (stacked) or horizontal logo orientation
+2. **Enter Department/Unit Name**: Add your Stanford department, school, or unit name
+3. **Preview**: See real-time changes with official Stanford styling (preview shown at 6x actual size for better visibility)
+4. **Export**: Download your logo in preferred format while maintaining brand compliance. The ZIP download includes all file types and black and white versions.
 
 ## Logo Types
 
