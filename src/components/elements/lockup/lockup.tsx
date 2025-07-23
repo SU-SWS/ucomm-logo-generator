@@ -9,11 +9,24 @@ import JSZip from "jszip"
 import SelectList from "@components/elements/select-list"
 import {clsx} from "clsx"
 import LockupUnitTwoLines from "@components/elements/lockup/lockup-unit-two-lines"
+import LockupUnitTwoLinesBigSmall from "@components/elements/lockup/lockup-unit-two-lines-small-big"
+import LockupUnitLevel from "@components/elements/lockup/lockup-unit-level"
+import LockupUnitTwoLinesLevel from "@components/elements/lockup/lockup-unit-two-lines-level"
+import LockupSchool from "@components/elements/lockup/lockup-school"
+import LockupAltSchool from "@components/elements/lockup/lockup-alt-school"
+import LockupMultidisciplinary from "@components/elements/lockup/lockup-multidisciplinary"
+import LockupVerticalUnit from "@components/elements/lockup/lockup-vertical-unit"
+import LockupVerticalUnitTwoLines from "@components/elements/lockup/lockup-vertical-unit-two-lines"
+import LockupVerticalUnitTwoLinesLevel from "@components/elements/lockup/lockup-vertical-unit-two-lines-level"
+import LockupVerticalSchool from "@components/elements/lockup/lockup-vertical-school"
+import LockupVerticalSchoolUnit from "@components/elements/lockup/lockup-vertical-school-unit"
+import LockupVerticalSchoolUnitLevel from "@components/elements/lockup/lockup-vertical-school-unit-level"
 
 export type LockupProps = {
   line1?: string
   line2?: string
   line3?: string
+  line4?: string
   siteName?: string
   logoUrl?: string
 }
@@ -51,6 +64,8 @@ export const Lockup = ({
   const setLine2 = useDebounceCallback(setLine2State, 500)
   const [line3, setLine3State] = useState("")
   const setLine3 = useDebounceCallback(setLine3State, 500)
+  const [line4, setLine4State] = useState("")
+  const setLine4 = useDebounceCallback(setLine4State, 500)
 
   const downloadLogo = (format: ImageFormats) => {
     if (!ref.current) return
@@ -119,6 +134,7 @@ export const Lockup = ({
 
   return (
     <div className="m-20">
+      <p>Please select a logo style:</p>
       {allowChoice && (
         <SelectList
           label="Logo Style"
@@ -127,8 +143,8 @@ export const Lockup = ({
             {value: "unit", label: "Unit (1 Line)"},
             {value: "unit_2_line", label: "Unit (2 Lines)"},
             {value: "unit_level", label: "Unit + Level (1 Line)"},
-            {value: "unit_2_lines", label: "Unit (2 Lines, Big/small"},
-            {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level)"},
+            {value: "unit_2_lines_big_small", label: "Unit (2 Lines, Small/Big)"},
+            {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level"},
             {value: "school", label: "School Only"},
             {value: "alt_school", label: "Alt School + Unit (1 Line)"},
             {value: "multidisciplinary", label: "Multidisciplinary (or long school name)"},
@@ -136,7 +152,7 @@ export const Lockup = ({
             {value: "vertical_unit_2_lines", label: "Vertical - Unit (2 Lines)"},
             {value: "vertical_2_lines_level", label: "Vertical - Unit (2 Lines) + Level"},
             {value: "vertical_school", label: "Vertical - School"},
-            {value: "vertical_school_unit", label: "Vertical - School + Unit"},
+            {value: "vertical_school_unit", label: "Vertical - School + Unit (2 Lines)"},
             {value: "vertical_school_unit_level", label: "Vertical - School + Unit + Level"},
           ]}
           defaultValue="unit"
@@ -144,29 +160,57 @@ export const Lockup = ({
         />
       )}
       <div ref={ref} className="w-fit p-2">
-        <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} />
+        <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} line4={line4} />
       </div>
-
       <form className="mb-10">
-        <div className="flex items-center gap-5">
+        <div className="mb-10 flex items-center gap-5">
           <label htmlFor={id + "-line1"}>Line 1</label>
-          <input id={id + "-line1"} onChange={e => setLine1(e.target.value)} />
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line1"}
+            onChange={e => setLine1(e.target.value)}
+          />
         </div>
         <div
-          className={clsx("flex items-center gap-5", {
+          className={clsx("mb-10 flex items-center gap-5", {
             hidden: ["unit", "school", "vertical_unit", "vertical_school"].includes(lockupOption),
           })}
         >
           <label htmlFor={id + "-line2"}>Line 2</label>
-          <input id={id + "-line2"} onChange={e => setLine2(e.target.value)} />
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line2"}
+            onChange={e => setLine2(e.target.value)}
+          />
         </div>
         <div
-          className={clsx("flex items-center gap-5", {
-            hidden: !["unit_2_lines_level", "vertical_2_lines_level"].includes(lockupOption),
+          className={clsx("mb-10 flex items-center gap-5", {
+            hidden: ![
+              "unit_2_lines_level",
+              "vertical_2_lines_level",
+              "vertical_school_unit",
+              "vertical_school_unit_level",
+            ].includes(lockupOption),
           })}
         >
           <label htmlFor={id + "-line3"}>Line 3</label>
-          <input id={id + "-line3"} onChange={e => setLine3(e.target.value)} />
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line3"}
+            onChange={e => setLine3(e.target.value)}
+          />
+        </div>
+        <div
+          className={clsx("mb-10 flex items-center gap-5", {
+            hidden: !["vertical_school_unit_level"].includes(lockupOption),
+          })}
+        >
+          <label htmlFor={id + "-line4"}>Line 4</label>
+          <input
+            className="p-25 h-[40px] w-[250px] text-3xl"
+            id={id + "-line4"}
+            onChange={e => setLine4(e.target.value)}
+          />
         </div>
       </form>
       <div className="flex gap-5">
@@ -190,6 +234,7 @@ export const LockupElement = ({
   line1,
   line2,
   line3,
+  line4,
 }: LockupProps & {
   lockupOption: LockupOption
 }) => {
@@ -197,6 +242,7 @@ export const LockupElement = ({
     line1: line1,
     line2: line2,
     line3: line3,
+    line4: line4,
   }
 
   switch (lockupOption) {
@@ -207,40 +253,40 @@ export const LockupElement = ({
       return <LockupUnitTwoLines {...lockupProps} />
 
     case "unit_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupUnitLevel {...lockupProps} />
 
     case "unit_2_lines_big_small":
-      return <LockupUnit {...lockupProps} />
+      return <LockupUnitTwoLinesBigSmall {...lockupProps} />
 
     case "unit_2_lines_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupUnitTwoLinesLevel {...lockupProps} />
 
     case "school":
-      return <LockupUnit {...lockupProps} />
+      return <LockupSchool {...lockupProps} />
 
     case "alt_school":
-      return <LockupUnit {...lockupProps} />
+      return <LockupAltSchool {...lockupProps} />
 
     case "multidisciplinary":
-      return <LockupUnit {...lockupProps} />
+      return <LockupMultidisciplinary {...lockupProps} />
 
     case "vertical_unit":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalUnit {...lockupProps} />
 
     case "vertical_unit_2_lines":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalUnitTwoLines {...lockupProps} />
 
     case "vertical_2_lines_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalUnitTwoLinesLevel {...lockupProps} />
 
     case "vertical_school":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalSchool {...lockupProps} />
 
     case "vertical_school_unit":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalSchoolUnit {...lockupProps} />
 
     case "vertical_school_unit_level":
-      return <LockupUnit {...lockupProps} />
+      return <LockupVerticalSchoolUnitLevel {...lockupProps} />
   }
 }
 export default Lockup

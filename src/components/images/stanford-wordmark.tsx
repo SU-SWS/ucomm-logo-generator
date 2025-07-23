@@ -5,13 +5,13 @@ type Props = HtmlHTMLAttributes<SVGSVGElement> & {
   width?: number
 }
 
-const StanfordWordMark = ({height = 91, width = 426, ...props}: Props) => {
-  if (height != 91 && width == 426) {
-    width *= height / 91
+const StanfordWordMark = ({height = 90, width = 429, ...props}: Props) => {
+  if (height != 90 && width == 429) {
+    width *= height / 90
   }
 
-  if (height == 91 && width != 426) {
-    height *= width / 426
+  if (height == 90 && width != 429) {
+    height *= width / 429
   }
 
   return (
@@ -19,7 +19,7 @@ const StanfordWordMark = ({height = 91, width = 426, ...props}: Props) => {
       aria-hidden
       width={width}
       height={height}
-      viewBox="0 0 426.000000 91.000000"
+      viewBox="0 0 429.000000 90.000000"
       preserveAspectRatio="xMidYMid meet"
       {...props}
     >
