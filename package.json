@@ -19,6 +19,7 @@
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "autoprefixer": "^10.4.21",
+    "cloudconvert": "^3.0.0",
     "clsx": "^2.1.1",
     "decanter": "^7.3.2",
     "downloadjs": "^1.4.7",

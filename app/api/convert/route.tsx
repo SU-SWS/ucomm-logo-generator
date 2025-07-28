@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server"
 import sharp from "sharp"
 import JSZip from "jszip"
+import CloudConvert from "cloudconvert"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -20,6 +21,7 @@ PNG - White
 
 export const POST = async (request: Request) => {
   const postData = await request.json()
+
   const logoFile = Buffer.from(postData.image)
   const generatedSize = {width: postData.width * 5, height: postData.height * 5}
 
@@ -48,6 +50,39 @@ export const POST = async (request: Request) => {
   // Create JPEG file.
   const jpg = await sharp(logoFile).resize(generatedSize).flatten({background: "#fff"}).jpeg().toBuffer()
   zipFile.file("logo.jpeg", jpg, {base64: true})
+
+  const cloudConvert = new CloudConvert(process.env.CLOUD_CONVERT_KEY as string, true)
+
+  let job = await cloudConvert.jobs.create({
+    tasks: {
+      "upload-my-file": {
+        operation: "import/base64",
+        file: logoFile.toString("base64"),
+        filename: "logo.svg",
+      },
+      "convert-my-file": {
+        operation: "convert",
+        input: "upload-my-file",
+        input_format: "svg",
+        output_format: "eps",
+        text_to_path: true,
+      },
+      "export-my-file": {
+        operation: "export/url",
+        input: "convert-my-file",
+      },
+    },
+  })
+
+  // Wait for job completion
+  job = await cloudConvert.jobs.wait(job.id)
+  const file = cloudConvert.jobs.getExportUrls(job)[0]
+
+  if (file?.url) {
+    const epsFile = await fetch(file.url).then(res => res.blob())
+    const buffer = Buffer.from(await epsFile.arrayBuffer())
+    zipFile.file("logo.eps", buffer)
+  }
 
   const generatedFile = await zipFile.generateAsync({type: "blob"})
   return new NextResponse(generatedFile, {

@@ -7,7 +7,7 @@ const LockupUnit = ({line1}: LockupProps) => {
   const textRef = useRef<SVGTextElement>(null)
   const [width, setWidth] = useState(175)
   useLayoutEffect(() => {
-    setWidth(Math.round(Math.round(textRef.current?.getBoundingClientRect().width || 0) / 4.4 + 80))
+    setWidth(Math.round(Math.round(textRef.current?.getBoundingClientRect().width || 0) / 4.4 + 85))
   }, [line1])
 
   return (
