@@ -82,31 +82,34 @@ export const Lockup = ({
 
   return (
     <div className="m-20">
-      <p>Please select a logo style:</p>
       {allowChoice && (
-        <SelectList
-          label="Logo Style"
-          required
-          options={[
-            {value: "unit", label: "Unit (1 Line)"},
-            {value: "unit_2_line", label: "Unit (2 Lines)"},
-            {value: "unit_level", label: "Unit + Level (1 Line)"},
-            {value: "unit_2_lines_big_small", label: "Unit (2 Lines, Small/Big)"},
-            {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level"},
-            {value: "school", label: "School Only"},
-            {value: "alt_school", label: "Alt School + Unit (1 Line)"},
-            {value: "multidisciplinary", label: "Multidisciplinary (or long school name)"},
-            {value: "vertical_unit", label: "Vertical - Unit"},
-            {value: "vertical_unit_2_lines", label: "Vertical - Unit (2 Lines)"},
-            {value: "vertical_2_lines_level", label: "Vertical - Unit (2 Lines) + Level"},
-            {value: "vertical_school", label: "Vertical - School"},
-            {value: "vertical_school_unit", label: "Vertical - School + Unit (2 Lines)"},
-            {value: "vertical_school_unit_level", label: "Vertical - School + Unit + Level"},
-          ]}
-          defaultValue="unit"
-          onChange={(_e, value) => setLockupOption(value as LockupOption)}
-        />
+        <>
+          <p>Please select a logo style:</p>
+          <SelectList
+            label="Logo Style"
+            required
+            options={[
+              {value: "unit", label: "Unit (1 Line)"},
+              {value: "unit_2_line", label: "Unit (2 Lines)"},
+              {value: "unit_level", label: "Unit + Level (1 Line)"},
+              {value: "unit_2_lines_big_small", label: "Unit (2 Lines, Small/Big)"},
+              {value: "unit_2_lines_level", label: "Unit (2 Lines) + Level"},
+              {value: "school", label: "School Only"},
+              {value: "alt_school", label: "Alt School + Unit (1 Line)"},
+              {value: "multidisciplinary", label: "Multidisciplinary (or long school name)"},
+              {value: "vertical_unit", label: "Vertical - Unit"},
+              {value: "vertical_unit_2_lines", label: "Vertical - Unit (2 Lines)"},
+              {value: "vertical_2_lines_level", label: "Vertical - Unit (2 Lines) + Level"},
+              {value: "vertical_school", label: "Vertical - School"},
+              {value: "vertical_school_unit", label: "Vertical - School + Unit (2 Lines)"},
+              {value: "vertical_school_unit_level", label: "Vertical - School + Unit + Level"},
+            ]}
+            defaultValue="unit"
+            onChange={(_e, value) => setLockupOption(value as LockupOption)}
+          />
+        </>
       )}
+
       <div ref={ref} className="p-2 [&_svg]:h-[100px]">
         <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} line4={line4} />
       </div>

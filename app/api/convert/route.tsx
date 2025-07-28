@@ -8,15 +8,15 @@ export const maxDuration = 60
 
 /*
 Formats:
-EPS - Regular
+EPS - Regular :check:
 EPS - Black
 EPS - White
 
-JPG - Regular
+JPG - Regular :check:
 
-PNG - Regular
-PNG - Black
-PNG - White
+PNG - Regular :check:
+PNG - Black :check:
+PNG - White :check:
  */
 
 export const POST = async (request: Request) => {
@@ -51,13 +51,29 @@ export const POST = async (request: Request) => {
   const jpg = await sharp(logoFile).resize(generatedSize).flatten({background: "#fff"}).jpeg().toBuffer()
   zipFile.file("logo.jpeg", jpg, {base64: true})
 
-  const cloudConvert = new CloudConvert(process.env.CLOUD_CONVERT_KEY as string, true)
+  const epsFile = await getEpsFile(logoFile.toString("base64"))
+  if (epsFile) zipFile.file("logo.eps", epsFile)
+
+  const generatedFile = await zipFile.generateAsync({type: "blob"})
+  return new NextResponse(generatedFile, {
+    status: 200,
+    headers: new Headers({
+      "content-disposition": `attachment; filename=logos.zip`,
+      "content-type": "application/zip",
+      "content-length": generatedFile.size + "",
+    }),
+  })
+}
+
+const getEpsFile = async (imageBase64: string) => {
+  if (!process.env.CLOUD_CONVERT_KEY) return
+  const cloudConvert = new CloudConvert(process.env.CLOUD_CONVERT_KEY, !!process.env.CLOUD_CONVERT_SANDBOX)
 
   let job = await cloudConvert.jobs.create({
     tasks: {
       "upload-my-file": {
         operation: "import/base64",
-        file: logoFile.toString("base64"),
+        file: imageBase64,
         filename: "logo.svg",
       },
       "convert-my-file": {
@@ -80,17 +96,6 @@ export const POST = async (request: Request) => {
 
   if (file?.url) {
     const epsFile = await fetch(file.url).then(res => res.blob())
-    const buffer = Buffer.from(await epsFile.arrayBuffer())
-    zipFile.file("logo.eps", buffer)
+    return Buffer.from(await epsFile.arrayBuffer())
   }
-
-  const generatedFile = await zipFile.generateAsync({type: "blob"})
-  return new NextResponse(generatedFile, {
-    status: 200,
-    headers: new Headers({
-      "content-disposition": `attachment; filename=logos.zip`,
-      "content-type": "application/zip",
-      "content-length": generatedFile.size + "",
-    }),
-  })
 }
