@@ -1,11 +1,10 @@
 "use client"
+
 import LockupUnit from "@components/elements/lockup/lockup-unit"
 import Button from "@components/elements/button"
-import {toPng, toJpeg, toSvg, toBlob} from "html-to-image"
 import {useId, useRef, useState} from "react"
 import downloadjs from "downloadjs"
 import {useDebounceCallback} from "usehooks-ts"
-import JSZip from "jszip"
 import SelectList from "@components/elements/select-list"
 import {clsx} from "clsx"
 import LockupUnitTwoLines from "@components/elements/lockup/lockup-unit-two-lines"
@@ -45,7 +44,6 @@ export type LockupOption =
   | "vertical_school"
   | "vertical_school_unit"
   | "vertical_school_unit_level"
-type ImageFormats = "png" | "svg+xml" | "jpeg" | "zip" | "eps"
 
 export const Lockup = ({
   allowChoice = false,
@@ -67,69 +65,19 @@ export const Lockup = ({
   const [line4, setLine4State] = useState("")
   const setLine4 = useDebounceCallback(setLine4State, 500)
 
-  const downloadLogo = (format: ImageFormats) => {
-    if (!ref.current) return
-    const element = ref.current
-    let image: Promise<string> | undefined
-    let filename = "logo.png"
-    switch (format) {
-      case "zip": {
-        const zip = new JSZip()
-        toPng(element)
-          .then(dataUrl => zip.file("logo.png", dataUrl.replace("data:image/png;base64,", ""), {base64: true}))
-          .then(() =>
-            toJpeg(element, {backgroundColor: "white"})
-              .then(dataUrl => zip.file("logo.jpeg", dataUrl.replace("data:image/jpeg;base64,", ""), {base64: true}))
-              .then(() =>
-                zip.generateAsync({type: "blob"}).then(content => downloadjs(content, "logos.zip", "application/x-zip"))
-              )
-          )
-          .catch(_e => console.warn("An error happened creating images or zip file."))
-        return
-      }
+  const downloadLogo = () => {
+    const convertImage = async () => {
+      const logo = document.getElementById("generated-logo")
 
-      case "eps":
-        toBlob(ref.current, {type: "image/png", backgroundColor: "transparent"})
-          .then(imageBlob => {
-            imageBlob
-              ?.arrayBuffer()
-              .then(imageBuffer => {
-                const imgData = new Uint8Array(imageBuffer)
-                fetch("/api/eps", {
-                  method: "POST",
-                  body: JSON.stringify({image: imgData}),
-                })
-                  .then(res => res.json())
-                  .then(data =>
-                    downloadjs(
-                      new Blob([data.eps], {type: "application/postscript"}),
-                      "logo.eps",
-                      "application/postscript"
-                    )
-                  )
-                  .catch(_e => console.warn("An error occurred"))
-              })
-              .catch(_e => console.warn("An error occurred"))
-          })
-          .catch(_e => console.warn("An error occurred"))
-        return
-
-      case "png":
-        image = toPng(ref.current, {backgroundColor: "transparent"})
-        break
-
-      case "svg+xml":
-        image = toSvg(ref.current, {type: "image/svg+xml"})
-        filename = "logo.svg"
-        break
-
-      case "jpeg":
-        image = toJpeg(ref.current, {backgroundColor: "white"})
-        filename = "logo.jpeg"
-        break
+      const res = await fetch("/api/convert", {
+        method: "POST",
+        body: JSON.stringify({image: logo?.outerHTML, height: logo?.clientHeight, width: logo?.clientWidth}),
+      })
+      if (!res.ok) throw new Error("Failed")
+      downloadjs(await res.blob(), "generated-logos.zip")
     }
-    if (image === undefined) return
-    void image.then(imageUrl => downloadjs(imageUrl, filename, `image/${format}`))
+
+    convertImage().catch(_e => console.warn("Something failed"))
   }
 
   return (
@@ -159,7 +107,7 @@ export const Lockup = ({
           onChange={(_e, value) => setLockupOption(value as LockupOption)}
         />
       )}
-      <div ref={ref} className="w-fit p-2">
+      <div ref={ref} className="p-2 [&_svg]:h-[100px]">
         <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} line4={line4} />
       </div>
       <form className="mb-10">
@@ -214,15 +162,7 @@ export const Lockup = ({
         </div>
       </form>
       <div className="flex gap-5">
-        <Button onClick={downloadLogo.bind(null, "png")}>Download PNG</Button>
-
-        <Button onClick={downloadLogo.bind(null, "svg+xml")}>Download SVG</Button>
-
-        <Button onClick={downloadLogo.bind(null, "jpeg")}>Download JPG</Button>
-
-        <Button onClick={downloadLogo.bind(null, "eps")}>Download EPS</Button>
-
-        <Button onClick={downloadLogo.bind(null, "zip")}>Download ZIP</Button>
+        <Button onClick={downloadLogo}>Download ZIP</Button>
       </div>
       <div ref={previewRef} />
     </div>
