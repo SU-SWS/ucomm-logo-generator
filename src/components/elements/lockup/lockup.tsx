@@ -4,7 +4,7 @@ import LockupUnit from "@components/elements/lockup/lockup-unit"
 import Button from "@components/elements/button"
 import {useId, useRef, useState} from "react"
 import downloadjs from "downloadjs"
-import {useDebounceCallback} from "usehooks-ts"
+import {useBoolean, useDebounceCallback} from "usehooks-ts"
 import SelectList from "@components/elements/select-list"
 import {clsx} from "clsx"
 import LockupUnitTwoLines from "@components/elements/lockup/lockup-unit-two-lines"
@@ -20,6 +20,7 @@ import LockupVerticalUnitTwoLinesLevel from "@components/elements/lockup/lockup-
 import LockupVerticalSchool from "@components/elements/lockup/lockup-vertical-school"
 import LockupVerticalSchoolUnit from "@components/elements/lockup/lockup-vertical-school-unit"
 import LockupVerticalSchoolUnitLevel from "@components/elements/lockup/lockup-vertical-school-unit-level"
+import {ExclamationTriangleIcon, XMarkIcon} from "@heroicons/react/16/solid"
 
 export type LockupProps = {
   line1?: string
@@ -53,8 +54,10 @@ export const Lockup = ({
   lockupChoice?: LockupOption
 }) => {
   const ref = useRef<HTMLDivElement>(null)
-  const previewRef = useRef<HTMLDivElement>(null)
   const id = useId()
+  const {value: downloadInProgress, setValue: setDownloadInProgress} = useBoolean(false)
+  const {value: downloadFailed, setValue: setDownloadFailed} = useBoolean(false)
+
   const [lockupOption, setLockupOption] = useState<LockupOption>(lockupChoice)
   const [line1, setLine1State] = useState("Line 1")
   const setLine1 = useDebounceCallback(setLine1State, 500)
@@ -67,7 +70,7 @@ export const Lockup = ({
 
   const downloadLogo = () => {
     const convertImage = async () => {
-      const logo = document.getElementById("generated-logo")
+      const logo = ref.current?.firstElementChild
 
       const res = await fetch("/api/convert", {
         method: "POST",
@@ -77,11 +80,34 @@ export const Lockup = ({
       downloadjs(await res.blob(), "generated-logos.zip")
     }
 
-    convertImage().catch(_e => console.warn("Something failed"))
+    setDownloadInProgress(true)
+    convertImage()
+      .then(() => setDownloadInProgress(false))
+      .catch(_e => {
+        console.warn("Something failed")
+        setDownloadInProgress(false)
+        setDownloadFailed(true)
+      })
   }
 
   return (
     <div className="m-20">
+      {downloadFailed && (
+        <div className="relative bg-poppy-light p-20 font-semibold text-black">
+          <span className="mx-auto flex w-fit items-center gap-5">
+            <ExclamationTriangleIcon width={30} />
+            An error occurred when generating the logos.
+          </span>
+          <button
+            className="absolute right-5 top-5 flex aspect-1 w-10 items-center justify-around rounded-full bg-cardinal-red"
+            onClick={() => setDownloadFailed(false)}
+          >
+            <XMarkIcon width={20} className="text-white" />
+            <span className="sr-only">Close message</span>
+          </button>
+        </div>
+      )}
+
       {allowChoice && (
         <>
           <p>Please select a logo style:</p>
@@ -169,9 +195,10 @@ export const Lockup = ({
         </div>
       </form>
       <div className="flex gap-5">
-        <Button onClick={downloadLogo}>Download ZIP</Button>
+        <Button onClick={downloadLogo} disabled={downloadInProgress}>
+          Download ZIP
+        </Button>
       </div>
-      <div ref={previewRef} />
     </div>
   )
 }
