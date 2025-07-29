@@ -56,13 +56,13 @@ export const Lockup = ({
   const previewRef = useRef<HTMLDivElement>(null)
   const id = useId()
   const [lockupOption, setLockupOption] = useState<LockupOption>(lockupChoice)
-  const [line1, setLine1State] = useState("")
+  const [line1, setLine1State] = useState("Line 1")
   const setLine1 = useDebounceCallback(setLine1State, 500)
-  const [line2, setLine2State] = useState("")
+  const [line2, setLine2State] = useState("Line 2")
   const setLine2 = useDebounceCallback(setLine2State, 500)
-  const [line3, setLine3State] = useState("")
+  const [line3, setLine3State] = useState("Line 3")
   const setLine3 = useDebounceCallback(setLine3State, 500)
-  const [line4, setLine4State] = useState("")
+  const [line4, setLine4State] = useState("Line 4")
   const setLine4 = useDebounceCallback(setLine4State, 500)
 
   const downloadLogo = () => {
@@ -120,6 +120,7 @@ export const Lockup = ({
             className="p-25 h-[40px] w-[250px] text-3xl"
             id={id + "-line1"}
             onChange={e => setLine1(e.target.value)}
+            defaultValue={line1}
           />
         </div>
         <div
@@ -132,6 +133,7 @@ export const Lockup = ({
             className="p-25 h-[40px] w-[250px] text-3xl"
             id={id + "-line2"}
             onChange={e => setLine2(e.target.value)}
+            defaultValue={line2}
           />
         </div>
         <div
@@ -149,6 +151,7 @@ export const Lockup = ({
             className="p-25 h-[40px] w-[250px] text-3xl"
             id={id + "-line3"}
             onChange={e => setLine3(e.target.value)}
+            defaultValue={line3}
           />
         </div>
         <div
@@ -161,6 +164,7 @@ export const Lockup = ({
             className="p-25 h-[40px] w-[250px] text-3xl"
             id={id + "-line4"}
             onChange={e => setLine4(e.target.value)}
+            defaultValue={line4}
           />
         </div>
       </form>

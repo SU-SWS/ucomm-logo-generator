@@ -9,8 +9,8 @@ export const maxDuration = 60
 /*
 Formats:
 EPS - Regular :check:
-EPS - Black
-EPS - White
+EPS - Black :check:
+EPS - White :check:
 
 JPG - Regular :check:
 
@@ -26,7 +26,6 @@ export const POST = async (request: Request) => {
   const generatedSize = {width: postData.width * 5, height: postData.height * 5}
 
   const zipFile = new JSZip()
-
   zipFile.file("logo.svg", logoFile)
 
   // Create Black file.
@@ -51,8 +50,18 @@ export const POST = async (request: Request) => {
   const jpg = await sharp(logoFile).resize(generatedSize).flatten({background: "#fff"}).jpeg().toBuffer()
   zipFile.file("logo.jpeg", jpg, {base64: true})
 
-  const epsFile = await getEpsFile(logoFile.toString("base64"))
-  if (epsFile) zipFile.file("logo.eps", epsFile)
+  const blackSvg = Buffer.from(logoFile.toString().replaceAll(/(fill|stroke)="#.*?"/g, '$1="#000000"'))
+  const whiteSvg = Buffer.from(logoFile.toString().replaceAll(/(fill|stroke)="#.*?"/g, '$1="#ffffff"'))
+
+  const epsFiles = await Promise.all([
+    getEpsFile(logoFile.toString("base64")),
+    getEpsFile(blackSvg.toString("base64")),
+    getEpsFile(whiteSvg.toString("base64")),
+  ])
+
+  if (epsFiles[0]) zipFile.file("logo.eps", epsFiles[0])
+  if (epsFiles[1]) zipFile.file("black-logo.eps", epsFiles[1])
+  if (epsFiles[2]) zipFile.file("white-logo.eps", epsFiles[2])
 
   const generatedFile = await zipFile.generateAsync({type: "blob"})
   return new NextResponse(generatedFile, {
