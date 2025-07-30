@@ -6,14 +6,20 @@ import {LockupSvg, LockupTextarea, LockupWordmark} from "@components/elements/lo
 
 // No equivalent in site's lockup
 const LockupVerticalUnit = ({line1}: LockupProps) => {
+  const svgHeight = 36
+  const svgRef = useRef<SVGSVGElement>(null)
   const textRef = useRef<SVGTextElement>(null)
+
   const [width, setWidth] = useState(175)
   useLayoutEffect(() => {
-    setWidth(Math.max(75, Math.round(Math.round(textRef.current?.getBoundingClientRect().width || 0) / 2.8)))
+    const svgClientHeight = Math.round(svgRef.current?.getBoundingClientRect().height || 0)
+    const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
+
+    setWidth(Math.max(75, Math.round(textWidth / (svgClientHeight / svgHeight))))
   }, [line1])
 
   return (
-    <LockupSvg width={width} height={36}>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark />
       <LockupTextarea ref={textRef} fontSize="12.75">
         <text x={0} y={31}>

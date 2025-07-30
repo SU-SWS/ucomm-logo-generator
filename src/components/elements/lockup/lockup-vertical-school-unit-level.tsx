@@ -2,20 +2,26 @@
 
 import {LockupProps} from "@components/elements/lockup/lockup"
 import {useLayoutEffect, useRef, useState} from "react"
-import {LockupSvg, LockupTextarea, LockupWordmark} from "@components/elements/lockup/lockup-svg"
+import {LockupLine, LockupSvg, LockupTextarea, LockupWordmark} from "@components/elements/lockup/lockup-svg"
 
 // No equivalent in site's lockup
 const LockupVerticalSchoolUnitLevel = ({line1, line2, line3, line4}: LockupProps) => {
+  const svgHeight = 77
+  const svgRef = useRef<SVGSVGElement>(null)
   const textRef = useRef<SVGTextElement>(null)
+
   const [width, setWidth] = useState(175)
   useLayoutEffect(() => {
-    setWidth(Math.max(75, Math.round(Math.round(textRef.current?.getBoundingClientRect().width || 0) / 1.2)))
+    const svgClientHeight = Math.round(svgRef.current?.getBoundingClientRect().height || 0)
+    const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
+
+    setWidth(Math.max(75, Math.round(textWidth / (svgClientHeight / svgHeight))))
   }, [line1, line2, line3, line4])
 
   return (
-    <LockupSvg width={width} height={77}>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark />
-      <line stroke="#231f20" strokeMiterlimit="10" strokeWidth=".6px" x1="72.61" y1="37.16" x2=".98" y2="37.16" />
+      <LockupLine x1={72.61} y1={37.16} x2={0.98} y2={37.16} />
 
       <LockupTextarea ref={textRef} fontWeight={600}>
         <text x={0} y={31}>

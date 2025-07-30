@@ -1,21 +1,23 @@
 "use client"
 
 import {LockupProps} from "@components/elements/lockup/lockup"
-import {useLayoutEffect, useRef, useState} from "react"
-import {LockupSvg, LockupTextarea, LockupWordmark} from "@components/elements/lockup/lockup-svg"
+import {
+  LockupLine,
+  LockupSvg,
+  LockupTextarea,
+  LockupWordmark,
+  useHorizontalLogo,
+} from "@components/elements/lockup/lockup-svg"
 
 // Option D in site's lockup
 const LockupUnitLevel = ({line1, line2}: LockupProps) => {
-  const textRef = useRef<SVGTextElement>(null)
-  const [width, setWidth] = useState(175)
-  useLayoutEffect(() => {
-    setWidth(Math.round(Math.round(textRef.current?.getBoundingClientRect().width || 0) / 2.5 + 85))
-  }, [line1])
+  const svgHeight = 22
+  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2)
 
   return (
-    <LockupSvg width={width} height={22}>
-      <LockupWordmark transform="translate(0,3.5)" />
-      <line stroke="#231f20" strokeMiterlimit="10" strokeWidth=".6px" x1="76.25" y1=".25" x2="76.25" y2="18.84" />
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark ref={wordmarkRef} transform="translate(0,3.5)" />
+      <LockupLine x1={76.25} y1={0.25} x2={76.25} y2={18.84} />
 
       <LockupTextarea ref={textRef}>
         <text x={79.85} y={8}>

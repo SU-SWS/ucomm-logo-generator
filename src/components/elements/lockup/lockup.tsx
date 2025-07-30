@@ -2,7 +2,7 @@
 
 import LockupUnit from "@components/elements/lockup/lockup-unit"
 import Button from "@components/elements/button"
-import {useId, useRef, useState} from "react"
+import {ChangeEvent, useId, useRef, useState} from "react"
 import downloadjs from "downloadjs"
 import {useBoolean, useDebounceCallback} from "usehooks-ts"
 import SelectList from "@components/elements/select-list"
@@ -20,15 +20,13 @@ import LockupVerticalUnitTwoLinesLevel from "@components/elements/lockup/lockup-
 import LockupVerticalSchool from "@components/elements/lockup/lockup-vertical-school"
 import LockupVerticalSchoolUnit from "@components/elements/lockup/lockup-vertical-school-unit"
 import LockupVerticalSchoolUnitLevel from "@components/elements/lockup/lockup-vertical-school-unit-level"
-import {ExclamationTriangleIcon, XMarkIcon} from "@heroicons/react/16/solid"
+import {ArrowPathIcon, ExclamationTriangleIcon, XMarkIcon} from "@heroicons/react/16/solid"
 
 export type LockupProps = {
   line1?: string
   line2?: string
   line3?: string
   line4?: string
-  siteName?: string
-  logoUrl?: string
 }
 export type LockupOption =
   | "unit"
@@ -54,7 +52,6 @@ export const Lockup = ({
   lockupChoice?: LockupOption
 }) => {
   const ref = useRef<HTMLDivElement>(null)
-  const id = useId()
   const {value: downloadInProgress, setValue: setDownloadInProgress} = useBoolean(false)
   const {value: downloadFailed, setValue: setDownloadFailed} = useBoolean(false)
 
@@ -136,69 +133,70 @@ export const Lockup = ({
         </>
       )}
 
-      <div ref={ref} className="p-2 [&_svg]:h-[100px]">
+      <div
+        ref={ref}
+        className={clsx("p-2 [&_svg]:h-[100px]", {"[&_svg]:h-[200px]": lockupOption.includes("vertical")})}
+      >
         <LockupElement lockupOption={lockupOption} line1={line1} line2={line2} line3={line3} line4={line4} />
       </div>
       <form className="mb-10">
-        <div className="mb-10 flex items-center gap-5">
-          <label htmlFor={id + "-line1"}>Line 1</label>
-          <input
-            className="p-25 h-[40px] w-[250px] text-3xl"
-            id={id + "-line1"}
-            onChange={e => setLine1(e.target.value)}
-            defaultValue={line1}
-          />
-        </div>
-        <div
-          className={clsx("mb-10 flex items-center gap-5", {
-            hidden: ["unit", "school", "vertical_unit", "vertical_school"].includes(lockupOption),
-          })}
-        >
-          <label htmlFor={id + "-line2"}>Line 2</label>
-          <input
-            className="p-25 h-[40px] w-[250px] text-3xl"
-            id={id + "-line2"}
-            onChange={e => setLine2(e.target.value)}
-            defaultValue={line2}
-          />
-        </div>
-        <div
-          className={clsx("mb-10 flex items-center gap-5", {
-            hidden: ![
+        <LockupInput onChange={e => setLine1(e.target.value)} defaultValue={line1} label="Line 1" />
+        <LockupInput
+          onChange={e => setLine2(e.target.value)}
+          defaultValue={line2}
+          label="Line 2"
+          hidden={["unit", "school", "vertical_unit", "vertical_school"].includes(lockupOption)}
+        />
+        <LockupInput
+          onChange={e => setLine3(e.target.value)}
+          defaultValue={line3}
+          label="Line 3"
+          hidden={
+            ![
               "unit_2_lines_level",
               "vertical_2_lines_level",
               "vertical_school_unit",
               "vertical_school_unit_level",
-            ].includes(lockupOption),
-          })}
-        >
-          <label htmlFor={id + "-line3"}>Line 3</label>
-          <input
-            className="p-25 h-[40px] w-[250px] text-3xl"
-            id={id + "-line3"}
-            onChange={e => setLine3(e.target.value)}
-            defaultValue={line3}
-          />
-        </div>
-        <div
-          className={clsx("mb-10 flex items-center gap-5", {
-            hidden: "vertical_school_unit_level" != lockupOption,
-          })}
-        >
-          <label htmlFor={id + "-line4"}>Line 4</label>
-          <input
-            className="p-25 h-[40px] w-[250px] text-3xl"
-            id={id + "-line4"}
-            onChange={e => setLine4(e.target.value)}
-            defaultValue={line4}
-          />
-        </div>
+            ].includes(lockupOption)
+          }
+        />
+        <LockupInput
+          onChange={e => setLine4(e.target.value)}
+          defaultValue={line4}
+          label="Line 4"
+          hidden={"vertical_school_unit_level" != lockupOption}
+        />
       </form>
       <div className="flex gap-5">
-        <Button onClick={downloadLogo} disabled={downloadInProgress}>
-          Download ZIP
+        <Button className="block w-[300px]" onClick={downloadLogo} disabled={downloadInProgress}>
+          {downloadInProgress ? <ArrowPathIcon className="mx-auto animate-spin" width={25} /> : "Download"}
         </Button>
       </div>
+    </div>
+  )
+}
+
+const LockupInput = ({
+  hidden,
+  label,
+  onChange,
+  defaultValue,
+}: {
+  hidden?: boolean
+  label: string
+  onChange: (_e: ChangeEvent<HTMLInputElement>) => void
+  defaultValue?: string
+}) => {
+  const id = useId()
+  return (
+    <div className={clsx("mb-10 flex items-center gap-5", {hidden})}>
+      <label htmlFor={id}>{label}</label>
+      <input
+        className="p-25 h-[40px] w-[250px] text-3xl"
+        id={id + "-line4"}
+        onChange={onChange}
+        defaultValue={defaultValue}
+      />
     </div>
   )
 }

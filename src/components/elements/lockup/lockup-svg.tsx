@@ -1,8 +1,17 @@
-import {CSSProperties, ReactNode, RefObject, SVGProps} from "react"
+import {CSSProperties, ReactNode, RefObject, SVGProps, useLayoutEffect, useRef, useState} from "react"
 
-export const LockupSvg = ({width, height, children}: {width: number; height: number; children: ReactNode}) => {
+export const LockupSvg = ({
+  width,
+  height,
+  children,
+  ...props
+}: SVGProps<SVGSVGElement> & {
+  width: number
+  height: number
+  children: ReactNode
+}) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width + 20} ${height}`} fill="#231f20">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`} fill="#231f20" {...props}>
       {children}
     </svg>
   )
@@ -45,4 +54,45 @@ export const LockupTextarea = ({
       {children}
     </g>
   )
+}
+
+export const LockupLine = ({x1, x2, y1, y2, ...props}: SVGProps<SVGLineElement>) => {
+  return <line stroke="#231f20" strokeMiterlimit="10" strokeWidth=".6px" x1={x1} y1={y1} x2={x2} y2={y2} {...props} />
+}
+
+export const useHorizontalLogo = (
+  svgHeight: number,
+  ...lines: Array<string | undefined>
+): [RefObject<SVGSVGElement | null>, RefObject<SVGTextElement | null>, RefObject<SVGGElement | null>, number] => {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const textRef = useRef<SVGTextElement>(null)
+  const wordmarkRef = useRef<SVGGElement>(null)
+
+  const [width, setWidth] = useState(100)
+  useLayoutEffect(() => {
+    const svgClientHeight = Math.round(svgRef.current?.getBoundingClientRect().height || 0)
+    const wordmarkWidth = Math.round(wordmarkRef.current?.getBoundingClientRect().width || 0)
+    const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
+
+    setWidth(Math.round((wordmarkWidth + textWidth) / (svgClientHeight / svgHeight)) + 9)
+  }, [svgHeight, ...lines])
+  return [svgRef, textRef, wordmarkRef, width]
+}
+
+export const useVerticalLogo = (
+  svgHeight: number,
+  ...lines: Array<string | undefined>
+): [RefObject<SVGSVGElement | null>, RefObject<SVGTextElement | null>, number] => {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const textRef = useRef<SVGTextElement>(null)
+
+  const [width, setWidth] = useState(175)
+  useLayoutEffect(() => {
+    const svgClientHeight = Math.round(svgRef.current?.getBoundingClientRect().height || 0)
+    const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
+
+    setWidth(Math.max(75, Math.round(textWidth / (svgClientHeight / svgHeight))) + 1)
+  }, [width, ...lines])
+
+  return [svgRef, textRef, width]
 }
