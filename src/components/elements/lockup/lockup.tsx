@@ -182,7 +182,7 @@ export const Lockup = ({
         </div>
         <div
           className={clsx("mb-10 flex items-center gap-5", {
-            hidden: !["vertical_school_unit_level"].includes(lockupOption),
+            hidden: "vertical_school_unit_level" != lockupOption,
           })}
         >
           <label htmlFor={id + "-line4"}>Line 4</label>

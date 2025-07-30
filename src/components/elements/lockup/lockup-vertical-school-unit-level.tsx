@@ -1,23 +1,41 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
+"use client"
+
 import {LockupProps} from "@components/elements/lockup/lockup"
+import {useLayoutEffect, useRef, useState} from "react"
+import {LockupSvg, LockupTextarea, LockupWordmark} from "@components/elements/lockup/lockup-svg"
 
 // No equivalent in site's lockup
-const LockupVerticalSchoolUnitLevel = ({line1, line2, line3, line4, siteName, logoUrl}: LockupProps) => {
+const LockupVerticalSchoolUnitLevel = ({line1, line2, line3, line4}: LockupProps) => {
+  const textRef = useRef<SVGTextElement>(null)
+  const [width, setWidth] = useState(175)
+  useLayoutEffect(() => {
+    setWidth(Math.max(75, Math.round(Math.round(textRef.current?.getBoundingClientRect().width || 0) / 1.2)))
+  }, [line1, line2, line3, line4])
+
   return (
-    <div className="py-10">
-      <div className="flex flex-col">
-        <div className="pb-[33px]">
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-        </div>
-        <div className="self-start text-[72px] font-normal font-semibold uppercase tracking-wide text-black">
-          {line1 || siteName}
-        </div>
-        <div className="mb-[26px] mt-[16px] h-[1px] max-w-[429px] shrink-0 bg-black" />
-        <div className="self-start text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
-        <div className="self-start text-[84px] font-normal leading-none text-black">{line3 || line3}</div>
-        <div className="self-start pt-[2px] text-[72px] italic text-black">{line4 || line4}</div>
-      </div>
-    </div>
+    <LockupSvg width={width} height={77}>
+      <LockupWordmark />
+      <line stroke="#231f20" strokeMiterlimit="10" strokeWidth=".6px" x1="72.61" y1="37.16" x2=".98" y2="37.16" />
+
+      <LockupTextarea ref={textRef} fontWeight={600}>
+        <text x={0} y={31}>
+          {line1?.toUpperCase()}
+        </text>
+      </LockupTextarea>
+      <LockupTextarea fontSize="10.5px">
+        <text style={{fontSize: "10.5px"}} x={0} y={52}>
+          {line2}
+        </text>
+        <text style={{fontSize: "10.5px"}} x={0} y={63.25}>
+          {line3}
+        </text>
+      </LockupTextarea>
+      <LockupTextarea fontSize="8.25px" fontStyle="italic">
+        <text style={{fontStyle: "italic", fontSize: "8.25px"}} x={0} y={74.3}>
+          {line4}
+        </text>
+      </LockupTextarea>
+    </LockupSvg>
   )
 }
 export default LockupVerticalSchoolUnitLevel
