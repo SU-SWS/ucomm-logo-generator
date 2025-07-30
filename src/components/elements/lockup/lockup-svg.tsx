@@ -75,6 +75,7 @@ export const useHorizontalLogo = (
     const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
 
     setWidth(Math.round((wordmarkWidth + textWidth) / (svgClientHeight / svgHeight)) + 9)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [svgHeight, ...lines])
   return [svgRef, textRef, wordmarkRef, width]
 }
@@ -92,7 +93,8 @@ export const useVerticalLogo = (
     const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
 
     setWidth(Math.max(75, Math.round(textWidth / (svgClientHeight / svgHeight))) + 1)
-  }, [width, ...lines])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [svgHeight, ...lines])
 
   return [svgRef, textRef, width]
 }
