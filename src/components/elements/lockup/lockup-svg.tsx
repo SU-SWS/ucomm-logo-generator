@@ -45,7 +45,7 @@ export const LockupTextarea = ({
     <g
       ref={ref}
       style={{
-        fontFamily: "Source Sans 3",
+        fontFamily: "'Source Sans 3'",
         letterSpacing: 0,
         fontSize,
         ...props,
