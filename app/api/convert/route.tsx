@@ -3,7 +3,6 @@ import sharp from "sharp"
 import JSZip from "jszip"
 import CloudConvert from "cloudconvert"
 import TextToSVG from "text-to-svg"
-import path from "node:path"
 import {readFileSync} from "fs"
 import {convertImageSchema} from "../../../src/zod/schema"
 
@@ -69,7 +68,7 @@ export const POST = async (request: Request) => {
 
     const weight = fontWeight ? fontWeight[1] : 400
     const fontStyle = isItalic ? "italic" : "normal"
-    const fontFile = path.resolve(`public/fonts/source-sans-3-latin-${weight}-${fontStyle}.woff`)
+    const fontFile = `public/fonts/source-sans-3-latin-${weight}-${fontStyle}.woff`
 
     const textSvg = TextToSVG.loadSync(fontFile).getPath(textString[1], {
       x: translateX,
@@ -146,7 +145,7 @@ const getEpsFile = async (imageBase64: string) => {
   const useSandbox = !!process.env.CLOUD_CONVERT_SANDBOX
 
   if (useSandbox) {
-    const testSVG = readFileSync(path.resolve("public/test.svg"))
+    const testSVG = readFileSync("public/test.svg")
     imageBase64 = testSVG.toString("base64")
   }
 
