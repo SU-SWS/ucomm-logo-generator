@@ -69,9 +69,7 @@ export const POST = async (request: Request) => {
 
     const weight = fontWeight ? fontWeight[1] : 400
     const fontStyle = isItalic ? "italic" : "normal"
-    const fontFile = path.resolve(
-      `node_modules/@fontsource/source-sans-3/files/source-sans-3-latin-${weight}-${fontStyle}.woff`
-    )
+    const fontFile = path.resolve(`public/fonts/source-sans-3-latin-${weight}-${fontStyle}.woff`)
 
     const textSvg = TextToSVG.loadSync(fontFile).getPath(textString[1], {
       x: translateX,
