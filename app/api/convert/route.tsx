@@ -2,10 +2,9 @@ import {NextResponse} from "next/server"
 import sharp from "sharp"
 import JSZip from "jszip"
 import CloudConvert from "cloudconvert"
-import TextToSVG from "text-to-svg"
-import path from "node:path"
-import {readFileSync} from "fs"
-import {convertImageSchema} from "../../../src/zod/schema"
+import {convertImageSchema} from "@zod/schema"
+import opentype from "opentype.js"
+import {testLogo} from "./test-logo"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -69,18 +68,15 @@ export const POST = async (request: Request) => {
 
     const weight = fontWeight ? fontWeight[1] : 400
     const fontStyle = isItalic ? "italic" : "normal"
-    const fontFile = path.resolve(
-      `node_modules/@fontsource/source-sans-3/files/source-sans-3-latin-${weight}-${fontStyle}.woff`
-    )
+    const fontFile = `https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.2.8/files/source-sans-3-latin-${weight}-${fontStyle}.woff`
 
-    const textSvg = TextToSVG.loadSync(fontFile).getPath(textString[1], {
-      x: translateX,
-      y: translateY,
-      fontSize: fontSize?.[1] ? parseFloat(fontSize[1]) : 12,
+    const fontWoff = await fetch(fontFile, {cache: "force-cache"})
+    const fontBuffer = await fontWoff.arrayBuffer()
+    const font = opentype.parse(fontBuffer)
+    const textSvg = font.getPath(textString[1], translateX, translateY, fontSize?.[1] ? parseFloat(fontSize[1]) : 12, {
       letterSpacing: 0,
     })
-    // Finally, replace the original <text>...</text> element with the new <path> element.
-    svgImageString = svgImageString.replace(textElement[0], textSvg)
+    svgImageString = svgImageString.replace(textElement[0], textSvg.toSVG(3))
   }
 
   const logoFile = Buffer.from(svgImageString)
@@ -147,10 +143,7 @@ const getEpsFile = async (imageBase64: string) => {
 
   const useSandbox = !!process.env.CLOUD_CONVERT_SANDBOX
 
-  if (useSandbox) {
-    const testSVG = readFileSync(path.resolve("public/test.svg"))
-    imageBase64 = testSVG.toString("base64")
-  }
+  if (useSandbox) imageBase64 = new Buffer(testLogo).toString("base64")
 
   const cloudConvert = new CloudConvert(process.env.CLOUD_CONVERT_KEY, useSandbox)
 
