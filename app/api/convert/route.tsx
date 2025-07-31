@@ -68,7 +68,7 @@ export const POST = async (request: Request) => {
 
     const weight = fontWeight ? fontWeight[1] : 400
     const fontStyle = isItalic ? "italic" : "normal"
-    const fontFile = process.cwd() + `/public/fonts/source-sans-3-latin-${weight}-${fontStyle}.woff`
+    const fontFile = process.cwd() + `/app/api/convert/fonts/source-sans-3-latin-${weight}-${fontStyle}.woff`
 
     const textSvg = TextToSVG.loadSync(fontFile).getPath(textString[1], {
       x: translateX,
@@ -145,7 +145,7 @@ const getEpsFile = async (imageBase64: string) => {
   const useSandbox = !!process.env.CLOUD_CONVERT_SANDBOX
 
   if (useSandbox) {
-    const testSVG = readFileSync(process.cwd() + "/public/test.svg")
+    const testSVG = readFileSync(process.cwd() + "/app/api/convert/test.svg")
     imageBase64 = testSVG.toString("base64")
   }
 
