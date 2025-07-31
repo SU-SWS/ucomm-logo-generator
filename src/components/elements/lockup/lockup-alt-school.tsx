@@ -1,22 +1,30 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
-import {LockupProps} from "@components/elements/lockup/lockup"
+"use client"
 
-// No equivalent in site's lockup
-const LockupAltSchool = ({line1, line2, siteName, logoUrl}: LockupProps) => {
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
+import {
+  LockupLine,
+  LockupSvg,
+  LockupTextarea,
+  LockupWordmark,
+  useHorizontalLogo,
+} from "@components/elements/lockup/lockup-svg"
+
+const LockupAltSchool = ({line1, line2}: LockupProps) => {
+  const svgHeight = 34
+  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2)
+
   return (
-    <div className="py-10">
-      <div className="flex gap-[18px]">
-        <div className="flex gap-[24px] self-end">
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-          <div className="w-[1px] shrink-0 bg-black" />
-        </div>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark ref={wordmarkRef} />
+      <LockupLine x1={76.44} y1={15.32} x2={76.44} y2={0.32} />
+      <LockupTextarea ref={textRef} style={{fontSize: "18px", fontWeight: 600}} x={80.67} y={15.19}>
+        {line1}
+      </LockupTextarea>
 
-        <div className="relative bottom-[-21px] self-end text-[120px] font-semibold uppercase leading-none text-black">
-          {line1 || siteName}
-        </div>
-      </div>
-      <div className="self-end pt-[25px] text-[102px] font-normal text-black">{line2 || line2}</div>
-    </div>
+      <LockupTextarea style={{fontSize: "12.75px"}} x={-0.51} y={30.4}>
+        {line2}
+      </LockupTextarea>
+    </LockupSvg>
   )
 }
 export default LockupAltSchool

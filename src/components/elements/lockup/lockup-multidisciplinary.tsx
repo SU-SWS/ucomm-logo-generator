@@ -1,22 +1,29 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
-import {LockupProps} from "@components/elements/lockup/lockup"
+"use client"
 
-// Option A in site's lockup
-const LockupMultidisciplinary = ({line1, line2, siteName, logoUrl}: LockupProps) => {
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
+import {
+  LockupLine,
+  LockupSvg,
+  LockupTextarea,
+  LockupWordmark,
+  useHorizontalLogo,
+} from "@components/elements/lockup/lockup-svg"
+
+const LockupMultidisciplinary = ({line1, line2}: LockupProps) => {
+  const svgHeight = 34
+  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1)
+
   return (
-    <div className="py-10">
-      <div className="flex gap-[18px]">
-        <div className="flex gap-[24px] self-end">
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-          <div className="w-[1px] shrink-0 bg-black" />
-        </div>
-
-        <div className="flex flex-col self-end">
-          <div className="relative bottom-[-26px] text-[102px] font-normal text-black">{line1 || siteName}</div>
-        </div>
-      </div>
-      <div className="self-end pt-[25px] text-[66px] font-semibold text-black">{line2 || line2}</div>
-    </div>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark ref={wordmarkRef} />
+      <LockupLine x1={76.14} y1={15.27} x2={76.14} y2={0.27} />
+      <LockupTextarea ref={textRef} style={{fontSize: "12.75px"}} x={79.67} y={15.14}>
+        {line1}
+      </LockupTextarea>
+      <LockupTextarea style={{fontSize: "8.25px", fontWeight: 600}} x={-0.53} y={29.2}>
+        {line2?.toUpperCase()}
+      </LockupTextarea>
+    </LockupSvg>
   )
 }
 export default LockupMultidisciplinary

@@ -1,23 +1,33 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
-import {LockupProps} from "@components/elements/lockup/lockup"
+"use client"
 
-// Option E in site's lockup
-const LockupUnitTwoLinesLevel = ({line1, line2, line3, siteName, logoUrl}: LockupProps) => {
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
+import {
+  LockupLine,
+  LockupSvg,
+  LockupTextarea,
+  LockupWordmark,
+  useHorizontalLogo,
+} from "@components/elements/lockup/lockup-svg"
+
+const LockupUnitTwoLinesLevel = ({line1, line2, line3}: LockupProps) => {
+  const svgHeight = 34
+  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2, line3)
   return (
-    <div className="py-10">
-      <div className="flex gap-[18px]">
-        <div className="flex gap-[24px] self-end">
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-        </div>
-        <div className="w-[1px] shrink-0 bg-black" />
-
-        <div className="flex flex-col self-end">
-          <div className="relative top-[-7px] text-[84px] font-normal leading-none text-black">{line1 || siteName}</div>
-          <div className="text-[84px] font-normal leading-none text-black">{line2 || line2}</div>
-          <div className="relative bottom-[-18px] text-[66px] italic text-black">{line3 || line3}</div>
-        </div>
-      </div>
-    </div>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark ref={wordmarkRef} transform="translate(0,15)" />
+      <LockupLine x1={76.25} y1={0.32} x2={76.25} y2={30.26} />
+      <g ref={textRef}>
+        <LockupTextarea style={{fontSize: "10.5px"}} x={79.84} y={8.01}>
+          {line1}
+        </LockupTextarea>
+        <LockupTextarea style={{fontSize: "10.5px"}} x={79.84} y={19.26}>
+          {line2}
+        </LockupTextarea>
+        <LockupTextarea style={{fontSize: "8.25px", fontStyle: "italic"}} x={80.54} y={30.34}>
+          {line3}
+        </LockupTextarea>
+      </g>
+    </LockupSvg>
   )
 }
 export default LockupUnitTwoLinesLevel

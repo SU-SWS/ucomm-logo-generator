@@ -1,21 +1,32 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
-import {LockupProps} from "@components/elements/lockup/lockup"
+"use client"
 
-// Option D in site's lockup
-const LockupUnitLevel = ({line1, line2, siteName, logoUrl}: LockupProps) => {
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
+import {
+  LockupLine,
+  LockupSvg,
+  LockupTextarea,
+  LockupWordmark,
+  useHorizontalLogo,
+} from "@components/elements/lockup/lockup-svg"
+
+const LockupUnitLevel = ({line1, line2}: LockupProps) => {
+  const svgHeight = 22
+  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2)
+
   return (
-    <div className="py-10">
-      <div className="flex gap-[18px]">
-        <div className="flex max-h-[90px] gap-[24px] self-end">
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-        </div>
-        <div className="w-[1px] shrink-0 bg-black" />
-        <div className="relative top-[-10px] flex flex-col self-end">
-          <div className="text-[84px] font-normal leading-none text-black">{line1 || siteName}</div>
-          <div className="relative top-[22px] text-[66px] italic leading-none text-black">{line2 || line2}</div>
-        </div>
-      </div>
-    </div>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark ref={wordmarkRef} transform="translate(0,3.5)" />
+      <LockupLine x1={76.25} y1={0.25} x2={76.25} y2={18.84} />
+
+      <g ref={textRef}>
+        <LockupTextarea x={79.85} y={9}>
+          {line1}
+        </LockupTextarea>
+        <LockupTextarea style={{fontSize: "8.25px", fontStyle: "italic"}} x={79.85} y={19}>
+          {line2}
+        </LockupTextarea>
+      </g>
+    </LockupSvg>
   )
 }
 export default LockupUnitLevel

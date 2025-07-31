@@ -1,22 +1,34 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
-import {LockupProps} from "@components/elements/lockup/lockup"
+"use client"
 
-// No equivalent in site's lockup
-const LockupVerticalSchoolUnit = ({line1, line2, line3, siteName, logoUrl}: LockupProps) => {
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
+import {
+  LockupLine,
+  LockupSvg,
+  LockupTextarea,
+  LockupWordmark,
+  useVerticalLogo,
+} from "@components/elements/lockup/lockup-svg"
+
+const LockupVerticalSchoolUnit = ({line1, line2, line3}: LockupProps) => {
+  const svgHeight = 66
+  const [svgRef, textRef, width] = useVerticalLogo(svgHeight, line1, line2, line3)
+
   return (
-    <div className="py-10">
-      <div className="flex flex-col">
-        <div className="pb-[33px]">
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-        </div>
-        <div className="self-start text-[72px] font-normal font-semibold uppercase tracking-wide text-black">
-          {line1 || siteName}
-        </div>
-        <div className="mb-[26px] mt-[16px] h-[1px] max-w-[429px] shrink-0 bg-black" />
-        <div className="self-start text-[84px] font-normal text-black">{line2 || line2}</div>
-        <div className="self-start text-[84px] font-normal text-black">{line3 || line3}</div>
-      </div>
-    </div>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark />
+      <LockupLine x1={71.87} y1={37.5} x2={0.24} y2={37.5} />
+      <g ref={textRef}>
+        <LockupTextarea style={{fontWeight: 600}} x={0} y={31.34}>
+          {line1?.toUpperCase()}
+        </LockupTextarea>
+        <LockupTextarea style={{fontSize: "10.5px"}} x={0} y={52.31}>
+          {line2}
+        </LockupTextarea>
+        <LockupTextarea style={{fontSize: "10.5px"}} x={0} y={63.561}>
+          {line3}
+        </LockupTextarea>
+      </g>
+    </LockupSvg>
   )
 }
 export default LockupVerticalSchoolUnit

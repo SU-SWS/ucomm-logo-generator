@@ -1,18 +1,19 @@
-import LockupLogo from "@components/elements/lockup/lockup-logo"
-import {LockupProps} from "@components/elements/lockup/lockup"
+"use client"
 
-// No equivalent in site's lockup
-const LockupVerticalUnit = ({line1, siteName, logoUrl}: LockupProps) => {
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
+import {LockupSvg, LockupTextarea, LockupWordmark, useVerticalLogo} from "@components/elements/lockup/lockup-svg"
+
+const LockupVerticalUnit = ({line1}: LockupProps) => {
+  const svgHeight = 36
+  const [svgRef, textRef, width] = useVerticalLogo(svgHeight, line1)
+
   return (
-    <div className="py-10">
-      <div className="flex flex-col gap-[30px]">
-        <div>
-          <LockupLogo logoUrl={logoUrl} siteName={siteName} />
-        </div>
-
-        <div className="self-start text-[102px] font-normal text-black">{line1 || siteName}</div>
-      </div>
-    </div>
+    <LockupSvg ref={svgRef} width={width} height={svgHeight}>
+      <LockupWordmark />
+      <LockupTextarea ref={textRef} style={{fontSize: "12.75px"}} x={0} y={31}>
+        {line1}
+      </LockupTextarea>
+    </LockupSvg>
   )
 }
 export default LockupVerticalUnit
