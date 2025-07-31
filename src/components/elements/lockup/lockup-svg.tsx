@@ -1,4 +1,4 @@
-import {CSSProperties, ReactNode, RefObject, SVGProps, useLayoutEffect, useRef, useState} from "react"
+import {ReactNode, RefObject, SVGProps, useLayoutEffect, useRef, useState} from "react"
 
 export const LockupSvg = ({
   width,
