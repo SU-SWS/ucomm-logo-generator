@@ -11,7 +11,13 @@ export const LockupSvg = ({
   children: ReactNode
 }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`} fill="#231f20" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={`0 0 ${width} ${height}`}
+      fill="#231f20"
+      style={{fontFamily: "'Source Sans 3'", letterSpacing: 0}}
+      {...props}
+    >
       {children}
     </svg>
   )
@@ -36,23 +42,16 @@ export const LockupTextarea = ({
   fontSize = "12px",
   ref,
   children,
+  style,
   ...props
-}: {
+}: SVGProps<SVGTextElement> & {
   children: ReactNode
   ref?: RefObject<SVGTextElement | null>
-} & CSSProperties) => {
+}) => {
   return (
-    <g
-      ref={ref}
-      style={{
-        fontFamily: "'Source Sans 3'",
-        letterSpacing: 0,
-        fontSize,
-        ...props,
-      }}
-    >
+    <text ref={ref} style={{fontSize, ...style}} {...props}>
       {children}
-    </g>
+    </text>
   )
 }
 

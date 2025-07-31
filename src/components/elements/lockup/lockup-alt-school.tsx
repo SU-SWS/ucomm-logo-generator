@@ -17,16 +17,12 @@ const LockupAltSchool = ({line1, line2}: LockupProps) => {
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark ref={wordmarkRef} />
       <LockupLine x1={76.44} y1={15.32} x2={76.44} y2={0.32} />
-      <LockupTextarea ref={textRef} fontSize="18px" fontWeight={600}>
-        <text x={80.67} y={15.19}>
-          {line1}
-        </text>
+      <LockupTextarea ref={textRef} style={{fontSize: "18px", fontWeight: 600}} x={80.67} y={15.19}>
+        {line1}
       </LockupTextarea>
 
-      <LockupTextarea fontSize="12.75px">
-        <text x={-0.51} y={30.4}>
-          {line2}
-        </text>
+      <LockupTextarea style={{fontSize: "12.75px"}} x={-0.51} y={30.4}>
+        {line2}
       </LockupTextarea>
     </LockupSvg>
   )
