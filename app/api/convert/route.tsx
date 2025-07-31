@@ -5,6 +5,7 @@ import CloudConvert from "cloudconvert"
 import TextToSVG from "text-to-svg"
 import path from "node:path"
 import {readFileSync} from "fs"
+import {convertImageSchema} from "../../../src/zod/schema"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -23,9 +24,20 @@ PNG - White :check:
  */
 export const POST = async (request: Request) => {
   // TODO: Add in some type of checker like JWT or something.
+  let svgImageString = "",
+    imageWidth = 0,
+    imageHeight = 0
 
-  const postData = await request.json()
-  let svgImageString = postData.image
+  try {
+    const postData = await request.json()
+    const requestData = convertImageSchema.parse(postData)
+    svgImageString = requestData.image
+    imageWidth = requestData.width
+    imageHeight = requestData.height
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message)
+    return new NextResponse("Invalid", {status: 400})
+  }
 
   // Grab all the <text>...</text> elements.
   const textMatch = svgImageString.matchAll(/<text.*?\/text>/g)
@@ -33,7 +45,9 @@ export const POST = async (request: Request) => {
   // Convert <text> elements into <path> SVG elements to avoid font family issues.
   for (const textElement of textMatch) {
     const textString = textElement[0].match(/>(.*)</)
-    if (textString[1].length === 0) {
+
+    // No text exists in the element. Remove the element and move on.
+    if (!textString || textString[1].length === 0) {
       svgImageString = svgImageString.replace(textElement[0], "")
       continue
     }
@@ -50,8 +64,8 @@ export const POST = async (request: Request) => {
     const yCoord = textElement[0].match(/ y="([\d.-]+)"/)
 
     // X and Y coordinates of the starting text within the SVG.
-    const translateX = parseFloat(xCoord[1])
-    const translateY = parseFloat(yCoord[1])
+    const translateX = parseFloat(xCoord?.[1] || "0")
+    const translateY = parseFloat(yCoord?.[1] || "0")
 
     const weight = fontWeight ? fontWeight[1] : 400
     const fontStyle = isItalic ? "italic" : "normal"
@@ -72,7 +86,7 @@ export const POST = async (request: Request) => {
   const logoFile = Buffer.from(svgImageString)
 
   // Scale the image for better PNG and JPEG images.
-  const generatedSize = {width: postData.width * 5, height: postData.height * 5}
+  const generatedSize = {width: imageWidth * 5, height: imageHeight * 5}
 
   // Create the zip and add the original SVG.
   const zipFile = new JSZip()
