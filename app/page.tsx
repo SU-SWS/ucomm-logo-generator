@@ -1,4 +1,4 @@
-import Lockup from "@components/elements/lockup/lockup"
+import LockupSelection from "@components/elements/lockup/lockup-selection"
 
 export const maxDuration = 60
 
@@ -8,7 +8,7 @@ const Home = async () => {
       <h1 className="sr-only" id="page-title">
         Site name
       </h1>
-      <Lockup allowChoice />
+      <LockupSelection allowChoice />
     </article>
   )
 }

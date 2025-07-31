@@ -44,7 +44,7 @@ export type LockupOption =
   | "vertical_school_unit"
   | "vertical_school_unit_level"
 
-export const Lockup = ({
+export const LockupSelection = ({
   allowChoice = false,
   lockupChoice = "unit",
 }: {
@@ -261,4 +261,4 @@ export const LockupElement = ({
       return <LockupVerticalSchoolUnitLevel {...lockupProps} />
   }
 }
-export default Lockup
+export default LockupSelection

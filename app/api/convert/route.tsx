@@ -4,6 +4,7 @@ import JSZip from "jszip"
 import CloudConvert from "cloudconvert"
 import TextToSVG from "text-to-svg"
 import path from "node:path"
+import {readFileSync} from "fs"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -129,7 +130,15 @@ export const POST = async (request: Request) => {
 const getEpsFile = async (imageBase64: string) => {
   // No API key?
   if (!process.env.CLOUD_CONVERT_KEY) return
-  const cloudConvert = new CloudConvert(process.env.CLOUD_CONVERT_KEY, !!process.env.CLOUD_CONVERT_SANDBOX)
+
+  const useSandbox = !!process.env.CLOUD_CONVERT_SANDBOX
+
+  if (useSandbox) {
+    const testSVG = readFileSync(path.resolve("public/test.svg"))
+    imageBase64 = testSVG.toString("base64")
+  }
+
+  const cloudConvert = new CloudConvert(process.env.CLOUD_CONVERT_KEY, useSandbox)
 
   let job = await cloudConvert.jobs.create({
     tasks: {

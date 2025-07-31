@@ -1,4 +1,4 @@
-import {Lockup, LockupOption} from "@components/elements/lockup/lockup"
+import {LockupSelection, LockupOption} from "@components/elements/lockup/lockup-selection"
 
 // https://vercel.com/docs/functions/runtimes#max-duration
 export const maxDuration = 60
@@ -10,7 +10,7 @@ type PageProps = {
 
 const Page = async (props: PageProps) => {
   const params = await props.params
-  return <Lockup lockupChoice={params.logo} />
+  return <LockupSelection lockupChoice={params.logo} />
 }
 
 export const generateStaticParams = async (): Promise<Array<{logo: LockupOption}>> => {

@@ -1,6 +1,6 @@
 "use client"
 
-import {LockupProps} from "@components/elements/lockup/lockup"
+import {LockupProps} from "@components/elements/lockup/lockup-selection"
 import {LockupSvg, LockupTextarea, LockupWordmark, useVerticalLogo} from "@components/elements/lockup/lockup-svg"
 
 const LockupVerticalUnitTwoLinesLevel = ({line1, line2, line3}: LockupProps) => {
