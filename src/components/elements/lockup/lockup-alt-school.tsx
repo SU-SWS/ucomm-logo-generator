@@ -11,7 +11,7 @@ import {
 
 const LockupAltSchool = ({line1, line2}: LockupProps) => {
   const svgHeight = 34
-  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2)
+  const [svgRef, textRef, lowerTextRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2)
 
   return (
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
@@ -21,7 +21,7 @@ const LockupAltSchool = ({line1, line2}: LockupProps) => {
         {line1}
       </LockupTextarea>
 
-      <LockupTextarea style={{fontSize: "12.75px"}} x={-0.51} y={30.4}>
+      <LockupTextarea ref={lowerTextRef} style={{fontSize: "12.75px"}} x={-0.51} y={30.4}>
         {line2}
       </LockupTextarea>
     </LockupSvg>

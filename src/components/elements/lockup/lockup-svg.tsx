@@ -62,9 +62,16 @@ export const LockupLine = ({x1, x2, y1, y2, ...props}: SVGProps<SVGLineElement>)
 export const useHorizontalLogo = (
   svgHeight: number,
   ...lines: Array<string | undefined>
-): [RefObject<SVGSVGElement | null>, RefObject<SVGTextElement | null>, RefObject<SVGGElement | null>, number] => {
+): [
+  RefObject<SVGSVGElement | null>,
+  RefObject<SVGTextElement | null>,
+  RefObject<SVGTextElement | null>,
+  RefObject<SVGGElement | null>,
+  number,
+] => {
   const svgRef = useRef<SVGSVGElement>(null)
   const textRef = useRef<SVGTextElement>(null)
+  const lowerTextRef = useRef<SVGTextElement>(null)
   const wordmarkRef = useRef<SVGGElement>(null)
 
   const [width, setWidth] = useState(100)
@@ -72,11 +79,15 @@ export const useHorizontalLogo = (
     const svgClientHeight = Math.round(svgRef.current?.getBoundingClientRect().height || 0)
     const wordmarkWidth = Math.round(wordmarkRef.current?.getBoundingClientRect().width || 0)
     const textWidth = Math.round(textRef.current?.getBoundingClientRect().width || 0)
+    const lowerTextWidth = Math.round(lowerTextRef.current?.getBoundingClientRect().width || 0)
 
-    setWidth(Math.round((wordmarkWidth + textWidth) / (svgClientHeight / svgHeight)) + 9)
+    const topWidth = Math.round((wordmarkWidth + textWidth) / (svgClientHeight / svgHeight)) + 9
+    const lowerWidth = Math.round(lowerTextWidth / (svgClientHeight / svgHeight)) + 1
+
+    setWidth(Math.max(topWidth, lowerWidth))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [svgHeight, ...lines])
-  return [svgRef, textRef, wordmarkRef, width]
+  return [svgRef, textRef, lowerTextRef, wordmarkRef, width]
 }
 
 export const useVerticalLogo = (

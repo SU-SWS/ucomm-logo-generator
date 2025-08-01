@@ -11,7 +11,7 @@ import {
 
 const LockupSchool = ({line1}: LockupProps) => {
   const svgHeight = 16
-  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1)
+  const [svgRef, textRef, , wordmarkRef, width] = useHorizontalLogo(svgHeight, line1)
 
   return (
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>

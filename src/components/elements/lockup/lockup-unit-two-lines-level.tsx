@@ -11,7 +11,7 @@ import {
 
 const LockupUnitTwoLinesLevel = ({line1, line2, line3}: LockupProps) => {
   const svgHeight = 34
-  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2, line3)
+  const [svgRef, textRef, , wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2, line3)
   return (
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark ref={wordmarkRef} transform="translate(0,15)" />

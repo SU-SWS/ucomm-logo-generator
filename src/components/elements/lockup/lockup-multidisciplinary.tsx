@@ -11,7 +11,7 @@ import {
 
 const LockupMultidisciplinary = ({line1, line2}: LockupProps) => {
   const svgHeight = 34
-  const [svgRef, textRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1)
+  const [svgRef, textRef, lowerTextRef, wordmarkRef, width] = useHorizontalLogo(svgHeight, line1, line2)
 
   return (
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
@@ -20,7 +20,7 @@ const LockupMultidisciplinary = ({line1, line2}: LockupProps) => {
       <LockupTextarea ref={textRef} style={{fontSize: "12.75px"}} x={79.67} y={15.14}>
         {line1}
       </LockupTextarea>
-      <LockupTextarea style={{fontSize: "8.25px", fontWeight: 600}} x={-0.53} y={29.2}>
+      <LockupTextarea ref={lowerTextRef} style={{fontSize: "8.25px", fontWeight: 600}} x={-0.53} y={29.2}>
         {line2?.toUpperCase()}
       </LockupTextarea>
     </LockupSvg>

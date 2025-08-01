@@ -196,6 +196,7 @@ const LockupInput = ({
         id={id + "-line4"}
         onChange={onChange}
         defaultValue={defaultValue}
+        maxLength={45}
       />
     </div>
   )
