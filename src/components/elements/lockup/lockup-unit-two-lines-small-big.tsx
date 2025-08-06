@@ -16,12 +16,12 @@ const LockupUnitTwoLinesBigSmall = ({line1, line2}: LockupProps) => {
   return (
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark ref={wordmarkRef} />
-      <LockupLine x1={76.08} y1={16.62} x2={76.08} y2={0.25} />
+      <LockupLine x1={76.08} y1={15.32} x2={76.08} y2={0.25} />
       <g ref={textRef}>
         <LockupTextarea style={{fontSize: "7px"}} x={80.13} y={5.36}>
           {line1}
         </LockupTextarea>
-        <LockupTextarea style={{fontSize: "10.5px"}} x={80.13} y={15.86}>
+        <LockupTextarea style={{fontSize: "10.5px"}} x={80.13} y={15.32}>
           {line2}
         </LockupTextarea>
       </g>
