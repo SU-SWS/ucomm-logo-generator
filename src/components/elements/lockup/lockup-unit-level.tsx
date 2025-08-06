@@ -22,7 +22,7 @@ const LockupUnitLevel = ({line1, line2}: LockupProps) => {
         <LockupTextarea x={79.85} y={9}>
           {line1}
         </LockupTextarea>
-        <LockupTextarea style={{fontSize: "8.25px", fontStyle: "italic"}} x={79.85} y={19}>
+        <LockupTextarea style={{fontSize: "8.25px", fontStyle: "italic"}} x={79.85} y={18.84}>
           {line2}
         </LockupTextarea>
       </g>

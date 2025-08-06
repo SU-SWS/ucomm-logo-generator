@@ -17,7 +17,7 @@ const LockupSchool = ({line1}: LockupProps) => {
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark ref={wordmarkRef} />
       <LockupLine x1={76.23} y1={15.17} x2={76.23} y2={0.17} />
-      <LockupTextarea ref={textRef} style={{fontSize: "15px", fontWeight: 600}} x={80.49} y={15.04}>
+      <LockupTextarea ref={textRef} style={{fontSize: "15px", fontWeight: 600}} x={80.49} y={15.17}>
         {line1?.toUpperCase()}
       </LockupTextarea>
     </LockupSvg>

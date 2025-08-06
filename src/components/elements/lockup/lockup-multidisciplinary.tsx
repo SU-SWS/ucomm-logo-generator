@@ -17,7 +17,7 @@ const LockupMultidisciplinary = ({line1, line2}: LockupProps) => {
     <LockupSvg ref={svgRef} width={width} height={svgHeight}>
       <LockupWordmark ref={wordmarkRef} />
       <LockupLine x1={76.14} y1={15.27} x2={76.14} y2={0.27} />
-      <LockupTextarea ref={textRef} style={{fontSize: "12.75px"}} x={79.67} y={15.14}>
+      <LockupTextarea ref={textRef} style={{fontSize: "12.75px"}} x={79.67} y={15.27}>
         {line1}
       </LockupTextarea>
       <LockupTextarea ref={lowerTextRef} style={{fontSize: "8.25px", fontWeight: 600}} x={-0.53} y={29.2}>
