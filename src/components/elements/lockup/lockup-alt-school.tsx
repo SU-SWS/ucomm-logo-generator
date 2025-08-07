@@ -18,7 +18,7 @@ const LockupAltSchool = ({line1, line2}: LockupProps) => {
       <LockupWordmark ref={wordmarkRef} />
       <LockupLine x1={76.44} y1={15.32} x2={76.44} y2={0.32} />
       <LockupTextarea ref={textRef} style={{fontSize: "18px", fontWeight: 600}} x={80.67} y={15.19}>
-        {line1}
+        {line1?.toUpperCase()}
       </LockupTextarea>
 
       <LockupTextarea ref={lowerTextRef} style={{fontSize: "12.75px"}} x={-0.51} y={30.4}>
