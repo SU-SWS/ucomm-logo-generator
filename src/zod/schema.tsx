@@ -11,4 +11,16 @@ export const convertImageSchema = z.object({
     .max(5000),
   width: z.number().describe("SVG Browser Width").min(0).max(10000),
   height: z.number().describe("SVG Browser Height").min(0).max(10000),
+  formats: z.array(
+    z.union([
+      z.literal("png-black"),
+      z.literal("png-white"),
+      z.literal("png-full"),
+      z.literal("jpg"),
+      z.literal("svg"),
+      z.literal("eps-black"),
+      z.literal("eps-white"),
+      z.literal("eps-full"),
+    ])
+  ),
 })

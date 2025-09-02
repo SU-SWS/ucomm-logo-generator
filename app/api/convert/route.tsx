@@ -25,7 +25,8 @@ export const POST = async (request: Request) => {
   // TODO: Add in some type of checker like JWT or something.
   let svgImageString = "",
     imageWidth = 0,
-    imageHeight = 0
+    imageHeight = 0,
+    formats = []
 
   try {
     const postData = await request.json()
@@ -33,6 +34,7 @@ export const POST = async (request: Request) => {
     svgImageString = requestData.image
     imageWidth = requestData.width
     imageHeight = requestData.height
+    formats = requestData.formats
   } catch (error) {
     if (error instanceof Error) console.error(error.message)
     return new NextResponse("Invalid", {status: 400})
@@ -86,29 +88,37 @@ export const POST = async (request: Request) => {
 
   // Create the zip and add the original SVG.
   const zipFile = new JSZip()
-  zipFile.file("logo.svg", logoFile)
+  if (formats.includes("svg")) zipFile.file("logo.svg", logoFile)
 
-  // Create Black PNG file & add to zip.
-  const blackPng = await sharp(logoFile).resize(generatedSize).greyscale().linear(0, 1.5).png({colors: 2}).toBuffer()
-  zipFile.file("black-logo.png", blackPng, {base64: true})
+  if (formats.includes("png-black")) {
+    // Create Black PNG file & add to zip.
+    const blackPng = await sharp(logoFile).resize(generatedSize).greyscale().linear(0, 1.5).png({colors: 2}).toBuffer()
+    zipFile.file("black-logo.png", blackPng, {base64: true})
+  }
 
-  // Create White PNG file & add to zip.
-  const whitePng = await sharp(logoFile)
-    .resize(generatedSize)
-    .greyscale()
-    .linear(0, 1.5)
-    .negate({alpha: false})
-    .png({colors: 2})
-    .toBuffer()
-  zipFile.file("white-logo.png", whitePng, {base64: true})
+  if (formats.includes("png-white")) {
+    // Create White PNG file & add to zip.
+    const whitePng = await sharp(logoFile)
+      .resize(generatedSize)
+      .greyscale()
+      .linear(0, 1.5)
+      .negate({alpha: false})
+      .png({colors: 2})
+      .toBuffer()
+    zipFile.file("white-logo.png", whitePng, {base64: true})
+  }
 
-  // Create regular PNG file & add to zip.
-  const png = await sharp(logoFile).resize(generatedSize).png().toBuffer()
-  zipFile.file("logo.png", png, {base64: true})
+  if (formats.includes("png-full")) {
+    // Create regular PNG file & add to zip.
+    const png = await sharp(logoFile).resize(generatedSize).png().toBuffer()
+    zipFile.file("logo.png", png, {base64: true})
+  }
 
-  // Create JPEG file & add to zip.
-  const jpg = await sharp(logoFile).resize(generatedSize).flatten({background: "#fff"}).jpeg().toBuffer()
-  zipFile.file("logo.jpeg", jpg, {base64: true})
+  if (formats.includes("jpg")) {
+    // Create JPEG file & add to zip.
+    const jpg = await sharp(logoFile).resize(generatedSize).flatten({background: "#fff"}).jpeg().toBuffer()
+    zipFile.file("logo.jpeg", jpg, {base64: true})
+  }
 
   // Modify the SVG by replacing any fill or stroke properties on elements. This is the fastest way to change the image
   // without loosing/changing any vectors.
@@ -117,9 +127,9 @@ export const POST = async (request: Request) => {
 
   // Call the Cloud convert to convert all 3 SVG files in parallel.
   const epsFiles = await Promise.all([
-    getEpsFile(logoFile.toString("base64")),
-    getEpsFile(blackSvg.toString("base64")),
-    getEpsFile(whiteSvg.toString("base64")),
+    formats.includes("eps-full") && getEpsFile(logoFile.toString("base64")),
+    formats.includes("eps-black") && getEpsFile(blackSvg.toString("base64")),
+    formats.includes("eps-white") && getEpsFile(whiteSvg.toString("base64")),
   ])
   if (epsFiles[0]) zipFile.file("logo.eps", epsFiles[0])
   if (epsFiles[1]) zipFile.file("black-logo.eps", epsFiles[1])

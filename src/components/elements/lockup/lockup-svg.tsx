@@ -49,7 +49,7 @@ export const LockupTextarea = ({
   ref?: RefObject<SVGTextElement | null>
 }) => {
   return (
-    <text ref={ref} style={{fontSize, ...style}} {...props}>
+    <text ref={ref} style={{fontSize, letterSpacing: 0, ...style}} {...props}>
       {children}
     </text>
   )

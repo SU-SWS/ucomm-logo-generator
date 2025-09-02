@@ -65,13 +65,32 @@ export const LockupSelection = ({
   const [line4, setLine4State] = useState("Line 4")
   const setLine4 = useDebounceCallback(setLine4State, 500)
 
+  const formats = [
+    {name: "png-black", label: "PNG: all black logo, on transparent background", defaultChecked: false},
+    {name: "png-white", label: "PNG: all white logo, on transparent background", defaultChecked: false},
+    {name: "png-full", label: "PNG: full color, on transparent background", defaultChecked: true},
+    {name: "jpg", label: "JPG: full color, on white background", defaultChecked: true},
+    {name: "svg", label: "SVG: full color, scalable vector graphics", defaultChecked: false},
+    {name: "eps-black", label: "EPS: all black vector", defaultChecked: false},
+    {name: "eps-white", label: "EPS: all white vector", defaultChecked: false},
+    {name: "eps-full", label: "EPS: full color (Cardinal red + black)", defaultChecked: false},
+  ]
+  const [chosenFormats, setChosenFormats] = useState(
+    formats.filter(format => format.defaultChecked).map(format => format.name)
+  )
+
   const downloadLogo = () => {
     const convertImage = async () => {
       const logo = ref.current?.firstElementChild
 
       const res = await fetch("/api/convert", {
         method: "POST",
-        body: JSON.stringify({image: logo?.outerHTML, height: logo?.clientHeight, width: logo?.clientWidth}),
+        body: JSON.stringify({
+          image: logo?.outerHTML,
+          height: logo?.clientHeight,
+          width: logo?.clientWidth,
+          formats: chosenFormats,
+        }),
       })
       if (!res.ok) throw new Error("Failed")
       downloadjs(await res.blob(), "generated-logos.zip")
@@ -85,6 +104,11 @@ export const LockupSelection = ({
         setDownloadInProgress(false)
         setDownloadFailed(true)
       })
+  }
+
+  const handleFormatChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const id = event.target.name
+    setChosenFormats(prevState => (prevState.includes(id) ? prevState.filter(item => item !== id) : [...prevState, id]))
   }
 
   return (
@@ -166,6 +190,22 @@ export const LockupSelection = ({
           label="Line 4"
           hidden={"vertical_school_unit_level" != lockupOption}
         />
+
+        <fieldset>
+          <legend className="mb-5 text-4xl font-bold">File Formats</legend>
+          {formats.map(format => (
+            <label key={format.name} className="mb-2 flex cursor-pointer items-center gap-5 text-5xl hocus:underline">
+              <input
+                type="checkbox"
+                checked={chosenFormats.includes(format.name)}
+                name={format.name}
+                className="block h-10 w-10"
+                onChange={handleFormatChange}
+              />
+              {format.label}
+            </label>
+          ))}
+        </fieldset>
       </form>
       <div className="flex gap-5">
         <Button className="block w-[300px]" onClick={downloadLogo} disabled={downloadInProgress}>
