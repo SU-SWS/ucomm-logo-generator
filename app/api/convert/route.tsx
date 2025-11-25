@@ -5,6 +5,7 @@ import CloudConvert from "cloudconvert"
 import {convertImageSchema} from "@zod/schema"
 import opentype from "opentype.js"
 import {testLogo} from "./test-logo"
+import {decode} from "html-entities"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -75,9 +76,16 @@ export const POST = async (request: Request) => {
     const fontWoff = await fetch(fontFile, {cache: "force-cache"})
     const fontBuffer = await fontWoff.arrayBuffer()
     const font = opentype.parse(fontBuffer)
-    const textSvg = font.getPath(textString[1], translateX, translateY, fontSize?.[1] ? parseFloat(fontSize[1]) : 12, {
-      letterSpacing: 0,
-    })
+
+    const textSvg = font.getPath(
+      decode(textString[1]),
+      translateX,
+      translateY,
+      fontSize?.[1] ? parseFloat(fontSize[1]) : 12,
+      {
+        letterSpacing: 0,
+      }
+    )
     svgImageString = svgImageString.replace(textElement[0], textSvg.toSVG(3))
   }
 
