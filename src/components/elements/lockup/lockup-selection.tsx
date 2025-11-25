@@ -51,18 +51,95 @@ export const LockupSelection = ({
   allowChoice?: boolean
   lockupChoice?: LockupOption
 }) => {
+  let initLine1 = "Line 1"
+  let initLine2 = "Line 2"
+  let initLine3 = "Line 3"
+  let initLine4 = "Line 4"
+  switch (lockupChoice) {
+    case "unit":
+      initLine1 = "Department Name"
+      break
+
+    case "unit_2_line":
+      initLine1 = "Your Department"
+      initLine2 = "Name on Two Lines"
+      break
+
+    case "unit_level":
+      initLine1 = "Department Name"
+      initLine2 = "Parent Unit Level"
+      break
+
+    case "unit_2_lines_big_small":
+      initLine1 = "Small first line of"
+      initLine2 = "Your Department Name"
+      break
+
+    case "unit_2_lines_level":
+      initLine1 = "Your Department"
+      initLine2 = "Name on Two Lines"
+      initLine3 = "Parent Unit Level"
+      break
+
+    case "school":
+      initLine1 = "School Name"
+      break
+
+    case "alt_school":
+      initLine1 = "School Name"
+      initLine2 = "Very Long Department Name Goes Here"
+      break
+
+    case "multidisciplinary":
+      initLine1 = "Department Name"
+      initLine2 = "Long school name or a second school name"
+      break
+
+    case "vertical_unit":
+      initLine1 = "Department Name"
+      break
+
+    case "vertical_unit_2_lines":
+      initLine1 = "Your Department"
+      initLine2 = "Name on Two Lines"
+      break
+
+    case "vertical_2_lines_level":
+      initLine1 = "Your Department"
+      initLine2 = "Name on Two Lines"
+      initLine3 = "Parent Unit Level"
+      break
+
+    case "vertical_school":
+      initLine1 = "School name"
+      break
+
+    case "vertical_school_unit":
+      initLine1 = "School name"
+      initLine2 = "Your Department"
+      initLine3 = "Name on Two Lines"
+      break
+
+    case "vertical_school_unit_level":
+      initLine1 = "School name"
+      initLine2 = "Your Department"
+      initLine3 = "Name on Two Lines"
+      initLine4 = "Parent Unit Level"
+      break
+  }
+
   const ref = useRef<HTMLDivElement>(null)
   const {value: downloadInProgress, setValue: setDownloadInProgress} = useBoolean(false)
   const {value: downloadFailed, setValue: setDownloadFailed} = useBoolean(false)
 
   const [lockupOption, setLockupOption] = useState<LockupOption>(lockupChoice)
-  const [line1, setLine1State] = useState("Line 1")
+  const [line1, setLine1State] = useState(initLine1)
   const setLine1 = useDebounceCallback(setLine1State, 500)
-  const [line2, setLine2State] = useState("Line 2")
+  const [line2, setLine2State] = useState(initLine2)
   const setLine2 = useDebounceCallback(setLine2State, 500)
-  const [line3, setLine3State] = useState("Line 3")
+  const [line3, setLine3State] = useState(initLine3)
   const setLine3 = useDebounceCallback(setLine3State, 500)
-  const [line4, setLine4State] = useState("Line 4")
+  const [line4, setLine4State] = useState(initLine4)
   const setLine4 = useDebounceCallback(setLine4State, 500)
 
   const formats = [

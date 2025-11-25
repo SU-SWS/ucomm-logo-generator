@@ -4,8 +4,12 @@ import {LockupSelection, LockupOption} from "@components/elements/lockup/lockup-
 export const maxDuration = 60
 export const dynamicParams = false
 
+type PageParams = {
+  logo: LockupOption
+}
+
 type PageProps = {
-  params: Promise<{logo: LockupOption}>
+  params: Promise<PageParams>
 }
 
 const Page = async (props: PageProps) => {
@@ -13,7 +17,7 @@ const Page = async (props: PageProps) => {
   return <LockupSelection lockupChoice={params.logo} />
 }
 
-export const generateStaticParams = async (): Promise<Array<{logo: LockupOption}>> => {
+export const generateStaticParams = async (): Promise<Array<PageParams>> => {
   return [
     {logo: "unit"},
     {logo: "unit_2_line"},
