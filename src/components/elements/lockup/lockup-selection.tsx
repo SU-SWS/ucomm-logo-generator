@@ -4,7 +4,7 @@ import LockupUnit from "@components/elements/lockup/lockup-unit"
 import Button from "@components/elements/button"
 import {ChangeEvent, useId, useRef, useState} from "react"
 import downloadjs from "downloadjs"
-import {useBoolean, useDebounceCallback} from "usehooks-ts"
+import {useBoolean, useCounter, useDebounceCallback} from "usehooks-ts"
 import SelectList from "@components/elements/select-list"
 import {clsx} from "clsx"
 import LockupUnitTwoLines from "@components/elements/lockup/lockup-unit-two-lines"
@@ -305,16 +305,22 @@ const LockupInput = ({
   defaultValue?: string
 }) => {
   const id = useId()
+  const {count, setCount} = useCounter(defaultValue?.length || 0)
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(e)
+    setCount(e.target?.value.length || 0)
+  }
   return (
     <div className={clsx("mb-10 flex items-center gap-5", {hidden})}>
       <label htmlFor={id}>{label}</label>
       <input
         className="p-25 h-[40px] w-[250px] text-3xl"
-        id={id + "-line4"}
-        onChange={onChange}
+        id={id}
+        onChange={onInputChange}
         defaultValue={defaultValue}
         maxLength={45}
       />
+      <span className="text-cardinal-red">Remaining: {45 - count}</span>
     </div>
   )
 }
