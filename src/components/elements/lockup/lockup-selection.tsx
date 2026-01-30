@@ -311,16 +311,18 @@ const LockupInput = ({
     setCount(e.target?.value.length || 0)
   }
   return (
-    <div className={clsx("mb-10 flex items-center gap-5", {hidden})}>
-      <label htmlFor={id}>{label}</label>
-      <input
-        className="p-25 h-[40px] w-[250px] text-3xl"
-        id={id}
-        onChange={onInputChange}
-        defaultValue={defaultValue}
-        maxLength={45}
-      />
-      <span className="text-cardinal-red">Remaining: {45 - count}</span>
+    <div className={clsx("mb-10 flex-col items-center gap-5", {hidden})}>
+      <div className="inline-flex flex-row gap-5">
+        <label htmlFor={id}>{label}</label>
+        <input
+          className="p-25 h-[40px] w-[250px] text-3xl"
+          id={id}
+          onChange={onInputChange}
+          defaultValue={defaultValue}
+          maxLength={45}
+        />
+      </div>
+      <p className="w-[310px] text-right text-[1.5rem] text-cardinal-red">Remaining: {45 - count}</p>
     </div>
   )
 }
