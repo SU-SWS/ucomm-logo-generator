@@ -322,7 +322,7 @@ const LockupInput = ({
           maxLength={45}
         />
       </div>
-      <p className="w-[310px] text-right text-[1.5rem] text-cardinal-red">Remaining: {45 - count}</p>
+      <span className="block w-[310px] text-right text-[1.5rem] text-cardinal-red">Remaining: {45 - count}</span>
     </div>
   )
 }
